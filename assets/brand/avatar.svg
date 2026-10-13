@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Neon Lofi BR">
+  <circle cx="60" cy="60" r="60" fill="#000"/>
+  <g fill="none" stroke="#fff" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M30 64V55.5a30 30 0 0 1 60 0V64"/>
+    <path d="M33.4 61V55.5a26.6 26.6 0 0 1 53.2 0V61"/>
+    <g transform="rotate(11 37 60)">
+      <rect x="30" y="59" width="14.5" height="33" rx="6"/>
+      <rect x="23.5" y="63.5" width="8.5" height="24" rx="4.2"/>
+    </g>
+    <g transform="rotate(-11 83 60)">
+      <rect x="75.5" y="59" width="14.5" height="33" rx="6"/>
+      <rect x="88" y="63.5" width="8.5" height="24" rx="4.2"/>
+    </g>
+  </g>
+</svg>
