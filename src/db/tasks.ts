@@ -5,7 +5,7 @@ import { formatShortDate } from '../lib/dates'
 import { uid } from '../lib/ids'
 import { priorityLabel, projectStatusLabel, taskStatusLabel } from '../lib/meta'
 
-const TX = [db.tasks, db.activity, db.counters] as const
+const TX = ['tasks', 'activity', 'counters']
 
 export type TaskInput = Partial<Omit<Task, 'id' | 'number' | 'createdAt' | 'updatedAt' | 'completedAt'>> & { title: string }
 
@@ -40,7 +40,7 @@ function log(task: Task, action: string, message: string) {
 
 /** Atualiza a tarefa e registra no histórico as mudanças importantes. */
 export async function updateTask(id: ID, patch: Partial<Omit<Task, 'id' | 'number' | 'createdAt'>>): Promise<void> {
-  await db.transaction('rw', [...TX, db.projects], async () => {
+  await db.transaction('rw', [...TX, 'projects'], async () => {
     const before = await db.tasks.get(id)
     if (!before) return
     const now = Date.now()

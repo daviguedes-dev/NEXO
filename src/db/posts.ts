@@ -5,7 +5,7 @@ import { formatShortDate } from '../lib/dates'
 import { entityKey, uid } from '../lib/ids'
 import { postStatusLabel } from '../lib/meta'
 
-const TX = [db.posts, db.templates, db.activity, db.counters] as const
+const TX = ['posts', 'templates', 'activity', 'counters']
 
 function logPost(p: Post, action: string, message: string) {
   return logActivity({ type: 'post', id: p.id, number: p.number, title: p.title, action, message })

@@ -4,7 +4,7 @@ import type { ID, ISODate, Routine, RoutineLog } from './types'
 import { formatShortDate, todayISO } from '../lib/dates'
 import { uid } from '../lib/ids'
 
-const TX = [db.routines, db.routineLogs, db.activity, db.counters] as const
+const TX = ['routines', 'routineLogs', 'activity', 'counters']
 
 export type RoutineInput = Partial<Omit<Routine, 'id' | 'number' | 'createdAt' | 'updatedAt'>> & { name: string }
 
@@ -66,7 +66,8 @@ async function getLog(routineId: ID, date: ISODate) {
 
 function freshLog(routine: Routine, date: ISODate): RoutineLog {
   return {
-    id: uid(),
+    // id determinístico: a mesma execução criada em dois aparelhos vira um único registro
+    id: `${routine.id}:${date}`,
     routineId: routine.id,
     date,
     steps: routine.steps.map((s) => ({ id: s.id, title: s.title, done: false })),

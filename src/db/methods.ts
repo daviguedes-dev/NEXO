@@ -4,7 +4,7 @@ import type { ID, Method, MethodRun, MethodStep } from './types'
 import { formatShortDate, todayISO } from '../lib/dates'
 import { entityKey, uid } from '../lib/ids'
 
-const TX = [db.methods, db.methodRuns, db.activity, db.counters] as const
+const TX = ['methods', 'methodRuns', 'activity', 'counters']
 
 export type MethodInput = Partial<Omit<Method, 'id' | 'number' | 'createdAt' | 'updatedAt' | 'version'>> & { title: string }
 

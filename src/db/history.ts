@@ -3,10 +3,25 @@ import type { Activity, EntityType } from './types'
 import { todayISO } from '../lib/dates'
 import { entityKey, uid } from '../lib/ids'
 
-/** Próximo número sequencial do tipo (TSK-1, TSK-2…). Use dentro de uma transação com `counters`. */
+const TABLE_OF: Record<EntityType, string> = {
+  task: 'tasks',
+  project: 'projects',
+  routine: 'routines',
+  method: 'methods',
+  run: 'methodRuns',
+  post: 'posts',
+  template: 'templates',
+}
+
+/**
+ * Próximo número sequencial do tipo (TSK-1, TSK-2…). Considera também o maior número
+ * já presente na tabela, que pode ter vindo de outro aparelho pela sincronização.
+ * Use dentro de uma transação que inclua `counters` e a tabela do tipo.
+ */
 export async function nextNumber(type: EntityType): Promise<number> {
   const current = await db.counters.get(type)
-  const value = (current?.value ?? 0) + 1
+  const last = (await db.table(TABLE_OF[type]).orderBy('number').last()) as { number: number } | undefined
+  const value = Math.max(current?.value ?? 0, last?.number ?? 0) + 1
   await db.counters.put({ name: type, value })
   return value
 }
