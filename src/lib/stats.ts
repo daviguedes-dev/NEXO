@@ -72,12 +72,7 @@ export const emptyDay = (): DayContribution => ({ total: 0, tasks: 0, routines: 
 
 /** Conta entregas por dia: tarefas concluídas, rotinas cumpridas,
  *  execuções de métodos finalizadas e publicações realizadas. */
-export function contributionMap(input: {
-  tasks: Task[]
-  logs: RoutineLog[]
-  runs: MethodRun[]
-  posts: Post[]
-}): Map<ISODate, DayContribution> {
+export function contributionMap(input: { tasks: Task[]; logs: RoutineLog[]; runs: MethodRun[]; posts: Post[] }): Map<ISODate, DayContribution> {
   const map = new Map<ISODate, DayContribution>()
   const bump = (day: ISODate, key: Exclude<keyof DayContribution, 'total'>) => {
     let d = map.get(day)

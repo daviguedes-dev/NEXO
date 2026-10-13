@@ -54,7 +54,15 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
     const items: Item[] = []
     for (const t of tasks) {
       const k = entityKey('task', t.number)
-      items.push({ id: t.id, group: 'Tarefas', label: t.title, meta: k, icon: <StatusIcon status={t.status} size={15} />, keywords: `${k} ${t.title}`, to: `/tarefas/${t.number}` })
+      items.push({
+        id: t.id,
+        group: 'Tarefas',
+        label: t.title,
+        meta: k,
+        icon: <StatusIcon status={t.status} size={15} />,
+        keywords: `${k} ${t.title}`,
+        to: `/tarefas/${t.number}`,
+      })
     }
     for (const r of routines) {
       const k = entityKey('routine', r.number)
@@ -70,7 +78,14 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
     }
     for (const p of posts) {
       const k = entityKey('post', p.number)
-      items.push({ id: p.id, group: 'Publicações', label: p.title, meta: k, keywords: `${k} ${p.title} ${p.platforms.join(' ')}`, to: `/publicacoes/${p.number}` })
+      items.push({
+        id: p.id,
+        group: 'Publicações',
+        label: p.title,
+        meta: k,
+        keywords: `${k} ${p.title} ${p.platforms.join(' ')}`,
+        to: `/publicacoes/${p.number}`,
+      })
     }
     for (const t of templates) {
       const k = entityKey('template', t.number)
@@ -92,7 +107,16 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
     ]
     if (!nq) return [...nav.filter((i) => i.group === 'Criar').slice(0, 3), ...nav.filter((i) => i.group === 'Ir para')]
     const match = (i: Item) => normalize(i.keywords).includes(nq)
-    return [...(records ?? []).filter(match).slice(0, 30), ...nav.filter(match)]
+    // referência exata primeiro, depois títulos que começam com o termo
+    const score = (i: Item) => {
+      const key = typeof i.meta === 'string' ? normalize(i.meta) : ''
+      if (key === nq) return 0
+      if (normalize(i.label).startsWith(nq)) return 1
+      if (key.startsWith(nq)) return 2
+      return 3
+    }
+    const found = (records ?? []).filter(match).sort((a, b) => score(a) - score(b))
+    return [...found.slice(0, 30), ...nav.filter(match)]
   }, [q, records])
 
   useEffect(() => setActive(0), [q])

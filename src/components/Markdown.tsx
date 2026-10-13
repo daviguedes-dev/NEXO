@@ -19,7 +19,7 @@ export function Markdown({ source }: { source: string }) {
     if (h) {
       const level = h[1].length
       const content = inline(h[2])
-      blocks.push(level === 1 ? <h3 key={key++}>{content}</h3> : level === 2 ? <h4 key={key++}>{content}</h4> : <h5 key={key++}>{content}</h5>)
+      blocks.push(level < 3 ? <h3 key={key++}>{content}</h3> : <h4 key={key++}>{content}</h4>)
       i++
       continue
     }

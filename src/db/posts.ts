@@ -102,7 +102,11 @@ export async function createPost(input: PostInput): Promise<Post> {
     }
     await db.posts.add(post)
     const tpl = post.templateId ? await db.templates.get(post.templateId) : undefined
-    await logPost(post, 'created', tpl ? `criou a partir do modelo ${entityKey('template', tpl.number)} · ${tpl.name}` : `criou a publicação em ${postStatusLabel(status)}`)
+    await logPost(
+      post,
+      'created',
+      tpl ? `criou a partir do modelo ${entityKey('template', tpl.number)} · ${tpl.name}` : `criou a publicação em ${postStatusLabel(status)}`,
+    )
     return post
   })
 }

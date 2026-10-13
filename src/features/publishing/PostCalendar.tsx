@@ -65,14 +65,23 @@ export function PostCalendar({ posts, onCreate }: { posts: Post[]; onCreate: (da
                   <div key={d} role="gridcell" className={cx('calendar__day', !inMonth && 'is-out', d === today && 'is-today')}>
                     <div className="calendar__day-head">
                       <span className="calendar__num mono">{Number(d.slice(8))}</span>
-                      <button type="button" className="calendar__add" aria-label={`Nova publicação em ${d.split('-').reverse().join('/')}`} onClick={() => onCreate(d)}>
+                      <button
+                        type="button"
+                        className="calendar__add"
+                        aria-label={`Nova publicação em ${d.split('-').reverse().join('/')}`}
+                        onClick={() => onCreate(d)}
+                      >
                         <Plus size={13} aria-hidden />
                       </button>
                     </div>
                     <ul className="calendar__items">
                       {items.map((p) => (
                         <li key={p.id}>
-                          <Link to={`/publicacoes/${p.number}`} className={cx('cal-item', `cal-item--${p.status}`)} title={`${entityKey('post', p.number)} · ${postStatusLabel(p.status)}`}>
+                          <Link
+                            to={`/publicacoes/${p.number}`}
+                            className={cx('cal-item', `cal-item--${p.status}`)}
+                            title={`${entityKey('post', p.number)} · ${postStatusLabel(p.status)}`}
+                          >
                             {p.scheduledTime && p.status !== 'published' && <span className="mono">{p.scheduledTime}</span>}
                             <span className="cal-item__title">{p.title}</span>
                           </Link>

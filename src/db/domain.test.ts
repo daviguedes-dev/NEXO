@@ -31,7 +31,13 @@ describe('tarefas', () => {
 
 describe('rotinas', () => {
   it('editar a rotina não altera execuções passadas', async () => {
-    const r = await createRoutine({ name: 'Manhã', steps: [{ id: 's1', title: 'Água' }, { id: 's2', title: 'Alongar' }] })
+    const r = await createRoutine({
+      name: 'Manhã',
+      steps: [
+        { id: 's1', title: 'Água' },
+        { id: 's2', title: 'Alongar' },
+      ],
+    })
     await toggleRoutineStep(r.id, '2026-10-10', 's1')
     let log = await db.routineLogs.where('[routineId+date]').equals([r.id, '2026-10-10']).first()
     expect(log?.status).toBe('partial')

@@ -32,7 +32,10 @@ export function OverviewPage() {
   const today = todayISO()
 
   const ready = tasks && routines && logs && runs && posts
-  const contributions = useMemo(() => (ready ? contributionMap({ tasks: tasks!, logs: logs!, runs: runs!, posts: posts! }) : new Map()), [ready, tasks, logs, runs, posts])
+  const contributions = useMemo(
+    () => (ready ? contributionMap({ tasks: tasks!, logs: logs!, runs: runs!, posts: posts! }) : new Map()),
+    [ready, tasks, logs, runs, posts],
+  )
 
   if (!ready) return null
 
@@ -79,22 +82,35 @@ export function OverviewPage() {
 
   return (
     <div className="page page--wide overview">
-      <PageHeader section="visão geral" title={`${greeting()}.`} description={<>{capitalize(formatLongDate(today))}{summary.length ? ` — ${summary.join(' · ')}.` : '.'}</>} />
+      <PageHeader
+        section="visão geral"
+        title={`${greeting()}.`}
+        description={
+          <>
+            {capitalize(formatLongDate(today))}
+            {summary.length ? ` — ${summary.join(' · ')}.` : '.'}
+          </>
+        }
+      />
 
       <dl className="strip panel" aria-label="Resumo">
         <div className="strip__item">
           <dt>Tarefas abertas</dt>
           <dd className="mono">{open.length}</dd>
-          <Link to="/tarefas?concluidas=0" className="strip__link">
-            ver lista
-          </Link>
+          <dd className="strip__more">
+            <Link to="/tarefas?concluidas=0" className="strip__link">
+              ver lista
+            </Link>
+          </dd>
         </div>
         <div className={cx('strip__item', overdue.length > 0 && 'is-alert')}>
           <dt>Atrasadas</dt>
           <dd className="mono">{overdue.length}</dd>
-          <Link to="/tarefas?prazo=overdue" className="strip__link">
-            revisar
-          </Link>
+          <dd className="strip__more">
+            <Link to="/tarefas?prazo=overdue" className="strip__link">
+              revisar
+            </Link>
+          </dd>
         </div>
         <div className="strip__item">
           <dt>Rotinas hoje</dt>
@@ -102,23 +118,29 @@ export function OverviewPage() {
             {routinesDone}
             <span className="muted">/{todayRoutines.length}</span>
           </dd>
-          <Link to="/rotinas" className="strip__link">
-            abrir
-          </Link>
+          <dd className="strip__more">
+            <Link to="/rotinas" className="strip__link">
+              abrir
+            </Link>
+          </dd>
         </div>
         <div className="strip__item">
           <dt>Métodos em execução</dt>
           <dd className="mono">{activeRuns.length}</dd>
-          <Link to="/metodos" className="strip__link">
-            continuar
-          </Link>
+          <dd className="strip__more">
+            <Link to="/metodos" className="strip__link">
+              continuar
+            </Link>
+          </dd>
         </div>
         <div className="strip__item">
           <dt>Publicações em 7 dias</dt>
           <dd className="mono">{weekPosts.length}</dd>
-          <Link to="/publicacoes?aba=calendario" className="strip__link">
-            calendário
-          </Link>
+          <dd className="strip__more">
+            <Link to="/publicacoes?aba=calendario" className="strip__link">
+              calendário
+            </Link>
+          </dd>
         </div>
       </dl>
 
@@ -145,7 +167,16 @@ export function OverviewPage() {
           )}
         </Panel>
 
-        <Panel className="ov-priorities" title="Prioridades" count={priorities.length} actions={<LinkButton to="/tarefas" variant="ghost" size="sm">Todas as tarefas</LinkButton>}>
+        <Panel
+          className="ov-priorities"
+          title="Prioridades"
+          count={priorities.length}
+          actions={
+            <LinkButton to="/tarefas" variant="ghost" size="sm">
+              Todas as tarefas
+            </LinkButton>
+          }
+        >
           {priorities.length === 0 ? (
             <p className="muted">Nada urgente. Defina prioridades nas tarefas para vê-las aqui.</p>
           ) : (
@@ -182,22 +213,40 @@ export function OverviewPage() {
           )}
         </Panel>
 
-        <Panel className="ov-heat" title="Consistência" actions={<span className="muted small">tarefas concluídas, rotinas cumpridas, métodos finalizados e publicações</span>}>
-          <div className="heat-summary">
-            <p>
-              <strong className="mono">{yearTotal}</strong> entregas nos últimos 12 meses
-            </p>
-            <p>
-              Sequência atual <strong className="mono">{streak}</strong> dia{streak === 1 ? '' : 's'}
-            </p>
-            <p>
-              Maior sequência <strong className="mono">{longest}</strong> dia{longest === 1 ? '' : 's'}
-            </p>
-            <p>
-              Hoje <strong className="mono">{doneToday}</strong>
-            </p>
-          </div>
-          <ContributionGraph data={contributions} today={today} />
+        <Panel
+          className="ov-heat"
+          title="Consistência"
+          actions={<span className="muted small">tarefas concluídas, rotinas cumpridas, métodos finalizados e publicações</span>}
+        >
+          <ContributionGraph
+            data={contributions}
+            today={today}
+            fit
+            aside={
+              <dl className="heat-facts">
+                <div>
+                  <dt>Entregas em 12 meses</dt>
+                  <dd className="mono">{yearTotal}</dd>
+                </div>
+                <div>
+                  <dt>Sequência atual</dt>
+                  <dd className="mono">
+                    {streak} <small>dia{streak === 1 ? '' : 's'}</small>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Maior sequência</dt>
+                  <dd className="mono">
+                    {longest} <small>dia{longest === 1 ? '' : 's'}</small>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Entregas hoje</dt>
+                  <dd className="mono">{doneToday}</dd>
+                </div>
+              </dl>
+            }
+          />
           <ul className="heat-parts" aria-label="Entregas por módulo nos últimos 12 meses">
             <li>
               <ListChecks size={14} aria-hidden /> <span className="mono">{parts.tasks}</span> tarefas
@@ -214,7 +263,16 @@ export function OverviewPage() {
           </ul>
         </Panel>
 
-        <Panel className="ov-projects" title="Projetos em andamento" count={activeProjects.length} actions={<LinkButton to="/projetos" variant="ghost" size="sm">Projetos</LinkButton>}>
+        <Panel
+          className="ov-projects"
+          title="Projetos em andamento"
+          count={activeProjects.length}
+          actions={
+            <LinkButton to="/projetos" variant="ghost" size="sm">
+              Projetos
+            </LinkButton>
+          }
+        >
           {activeProjects.length === 0 ? (
             <p className="muted">Nenhum projeto ativo.</p>
           ) : (
@@ -269,7 +327,11 @@ function Welcome() {
   ]
   return (
     <div className="page welcome">
-      <PageHeader section="início" title="Bem-vindo ao Nexo." description="Um lugar para rotinas, tarefas, métodos de trabalho e publicações — com histórico de tudo o que muda." />
+      <PageHeader
+        section="início"
+        title="Bem-vindo ao Nexo."
+        description="Um lugar para rotinas, tarefas, métodos de trabalho e publicações — com histórico de tudo o que muda."
+      />
       <ol className="welcome__steps">
         {steps.map((s, i) => (
           <li key={s.to}>
@@ -292,7 +354,14 @@ function Welcome() {
         <Button
           icon={Database}
           onClick={async () => {
-            if (!(await confirm({ title: 'Carregar dados de exemplo?', message: 'Serão criados registros fictícios de tarefas, rotinas, métodos e publicações.', confirmLabel: 'Carregar exemplos' }))) return
+            if (
+              !(await confirm({
+                title: 'Carregar dados de exemplo?',
+                message: 'Serão criados registros fictícios de tarefas, rotinas, métodos e publicações.',
+                confirmLabel: 'Carregar exemplos',
+              }))
+            )
+              return
             await loadExampleData()
             toast('Dados de exemplo carregados')
             navigate('/')

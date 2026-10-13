@@ -86,9 +86,7 @@ export function formatMonth(year: number, month: number): string {
 }
 
 export function formatDateTime(ts: Timestamp): string {
-  return fmt({ day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
-    .format(new Date(ts))
-    .replace('.', '')
+  return fmt({ day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(ts)).replace('.', '')
 }
 
 export function formatTime(ts: Timestamp): string {

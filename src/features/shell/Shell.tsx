@@ -65,10 +65,16 @@ export function Shell() {
       </a>
 
       <header className="topbar">
-        <button type="button" className="btn btn--ghost btn--icon topbar__btn" aria-label="Abrir navegação" aria-expanded={navOpen} onClick={() => setNavOpen(true)}>
+        <button
+          type="button"
+          className="btn btn--ghost btn--icon topbar__btn"
+          aria-label="Abrir navegação"
+          aria-expanded={navOpen}
+          onClick={() => setNavOpen(true)}
+        >
           <MenuIcon size={18} aria-hidden />
         </button>
-        <NavLink to="/" className="brand brand--topbar" aria-label="Nexo, visão geral">
+        <NavLink to="/" className="brand brand--topbar" aria-label="nexo — ir para a visão geral">
           <NexoMark size={26} />
           <span className="brand__name">nexo</span>
         </NavLink>
@@ -79,12 +85,13 @@ export function Shell() {
 
       <aside className="sidebar" aria-label="Navegação principal">
         <div className="sidebar__top">
-          <NavLink to="/" className="brand" aria-label="Nexo, visão geral">
+          <NavLink to="/" className="brand">
             <NexoMark size={30} />
             <span className="brand__text">
               <span className="brand__name">nexo</span>
               <span className="brand__tag mono">organização operacional</span>
             </span>
+            <span className="sr-only"> — visão geral</span>
           </NavLink>
           <button type="button" className="btn btn--ghost btn--icon sidebar__close" aria-label="Fechar navegação" onClick={() => setNavOpen(false)}>
             <X size={18} aria-hidden />

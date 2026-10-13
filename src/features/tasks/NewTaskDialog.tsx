@@ -76,7 +76,13 @@ export function NewTaskDialog({ open, onClose, defaults }: { open: boolean; onCl
           <Input id={`${id}-title`} autoFocus required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="O que precisa ser feito?" />
         </Field>
         <Field label="Observações" htmlFor={`${id}-notes`}>
-          <TextArea id={`${id}-notes`} rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Contexto, links, critérios de conclusão…" />
+          <TextArea
+            id={`${id}-notes`}
+            rows={3}
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder="Contexto, links, critérios de conclusão…"
+          />
         </Field>
         <div className="form__grid">
           <Field label="Status" htmlFor={`${id}-status`}>

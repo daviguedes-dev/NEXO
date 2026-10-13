@@ -1,17 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie'
-import type {
-  Activity,
-  Counter,
-  Label,
-  Method,
-  MethodRun,
-  Post,
-  PostTemplate,
-  Project,
-  Routine,
-  RoutineLog,
-  Task,
-} from './types'
+import type { Activity, Counter, Label, Method, MethodRun, Post, PostTemplate, Project, Routine, RoutineLog, Task } from './types'
 
 export class NexoDB extends Dexie {
   tasks!: EntityTable<Task, 'id'>
@@ -47,18 +35,6 @@ export class NexoDB extends Dexie {
 export const db = new NexoDB()
 
 /** Todas as tabelas, na ordem usada por backup/restauração. */
-export const TABLES = [
-  'tasks',
-  'labels',
-  'projects',
-  'routines',
-  'routineLogs',
-  'methods',
-  'methodRuns',
-  'templates',
-  'posts',
-  'activity',
-  'counters',
-] as const
+export const TABLES = ['tasks', 'labels', 'projects', 'routines', 'routineLogs', 'methods', 'methodRuns', 'templates', 'posts', 'activity', 'counters'] as const
 
 export type TableName = (typeof TABLES)[number]

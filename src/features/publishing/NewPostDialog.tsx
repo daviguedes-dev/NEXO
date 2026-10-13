@@ -14,7 +14,19 @@ export interface PostDefaults {
   templateId?: string
 }
 
-export function NewPostDialog({ open, onClose, templates, defaults, onCreated }: { open: boolean; onClose: () => void; templates: PostTemplate[]; defaults?: PostDefaults; onCreated?: (n: number) => void }) {
+export function NewPostDialog({
+  open,
+  onClose,
+  templates,
+  defaults,
+  onCreated,
+}: {
+  open: boolean
+  onClose: () => void
+  templates: PostTemplate[]
+  defaults?: PostDefaults
+  onCreated?: (n: number) => void
+}) {
   const id = useId()
   const toast = useToast()
   const [templateId, setTemplateId] = useState('')
@@ -64,7 +76,13 @@ export function NewPostDialog({ open, onClose, templates, defaults, onCreated }:
         <fieldset className="fieldset">
           <legend className="field__label">Ponto de partida</legend>
           <div className="template-choice" role="radiogroup" aria-label="Modelo">
-            <button type="button" role="radio" aria-checked={!templateId} className={cx('template-choice__item', !templateId && 'is-on')} onClick={() => setTemplateId('')}>
+            <button
+              type="button"
+              role="radio"
+              aria-checked={!templateId}
+              className={cx('template-choice__item', !templateId && 'is-on')}
+              onClick={() => setTemplateId('')}
+            >
               <FileText size={16} aria-hidden />
               <span>
                 <strong>Em branco</strong>
@@ -72,7 +90,14 @@ export function NewPostDialog({ open, onClose, templates, defaults, onCreated }:
               </span>
             </button>
             {usable.map((t) => (
-              <button key={t.id} type="button" role="radio" aria-checked={templateId === t.id} className={cx('template-choice__item', templateId === t.id && 'is-on')} onClick={() => setTemplateId(t.id)}>
+              <button
+                key={t.id}
+                type="button"
+                role="radio"
+                aria-checked={templateId === t.id}
+                className={cx('template-choice__item', templateId === t.id && 'is-on')}
+                onClick={() => setTemplateId(t.id)}
+              >
                 <LayoutTemplate size={16} aria-hidden />
                 <span>
                   <strong>{t.name}</strong>

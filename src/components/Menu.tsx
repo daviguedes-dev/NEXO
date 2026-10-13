@@ -20,10 +20,12 @@ interface MenuProps {
   align?: 'start' | 'end'
   triggerClassName?: string
   heading?: string
+  /** O texto visível do gatilho já nomeia o botão (não usar aria-label). */
+  textTrigger?: boolean
 }
 
 /** Menu suspenso com navegação por setas, Esc e clique fora. */
-export function Menu({ trigger, label, items, align = 'start', triggerClassName, heading }: MenuProps) {
+export function Menu({ trigger, label, items, align = 'start', triggerClassName, heading, textTrigger }: MenuProps) {
   const [open, setOpen] = useState(false)
   const root = useRef<HTMLDivElement>(null)
   const btn = useRef<HTMLButtonElement>(null)
@@ -71,7 +73,7 @@ export function Menu({ trigger, label, items, align = 'start', triggerClassName,
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={open ? id : undefined}
-        aria-label={label}
+        aria-label={textTrigger ? undefined : label}
         onClick={(e) => {
           e.stopPropagation()
           setOpen((o) => !o)

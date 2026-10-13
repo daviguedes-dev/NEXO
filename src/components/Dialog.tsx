@@ -52,7 +52,7 @@ export function Dialog({ open, onClose, title, eyebrow, children, footer, varian
             </div>
             <div className="dialog__head-actions">
               {headerActions}
-              <button type="button" className="btn btn--ghost btn--sm btn--icon" onClick={onClose} aria-label="Fechar">
+              <button type="button" className="btn btn--ghost btn--sm btn--icon" onClick={onClose} aria-label="Fechar" autoFocus={variant === 'sheet'}>
                 <X size={16} aria-hidden />
               </button>
             </div>

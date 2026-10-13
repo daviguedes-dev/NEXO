@@ -55,7 +55,12 @@ export function TaskBoard({ tasks, labels, projects, search, onCreate }: Props) 
       </Link>
       {t.labels.length > 0 && (
         <div className="kcard__labels">
-          {t.labels.map((id) => labelMap.get(id)).filter(Boolean).map((l) => <LabelChip key={l!.id} label={l!} />)}
+          {t.labels
+            .map((id) => labelMap.get(id))
+            .filter(Boolean)
+            .map((l) => (
+              <LabelChip key={l!.id} label={l!} />
+            ))}
         </div>
       )}
       {(t.dueDate || t.subtasks.length > 0 || t.projectId) && (
@@ -108,7 +113,7 @@ function Column({ id, label, count, children, onCreate }: { id: TaskStatus; labe
     <section ref={setNodeRef} className={cx('board__col', isOver && 'is-over')} aria-label={`${label}: ${count} tarefas`}>
       <header className="board__head">
         <StatusIcon status={id} />
-        <h3>{label}</h3>
+        <h2>{label}</h2>
         <span className="count mono">{count}</span>
         <button type="button" className="btn btn--ghost btn--sm btn--icon board__add" aria-label={`Nova tarefa em ${label}`} onClick={onCreate}>
           <Plus size={15} aria-hidden />

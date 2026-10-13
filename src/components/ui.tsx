@@ -47,7 +47,19 @@ export function LinkButton({ variant = 'secondary', size = 'md', icon: Icon, cla
 
 /* ---------------------------------------------------------- formulários */
 
-export function Field({ label, hint, htmlFor, children, className }: { label: ReactNode; hint?: ReactNode; htmlFor?: string; children: ReactNode; className?: string }) {
+export function Field({
+  label,
+  hint,
+  htmlFor,
+  children,
+  className,
+}: {
+  label: ReactNode
+  hint?: ReactNode
+  htmlFor?: string
+  children: ReactNode
+  className?: string
+}) {
   return (
     <div className={cx('field', className)}>
       <label className="field__label" htmlFor={htmlFor}>
@@ -75,7 +87,19 @@ export function Select({ className, children, ...rest }: SelectHTMLAttributes<HT
   )
 }
 
-export function Checkbox({ checked, onChange, label, className, disabled }: { checked: boolean; onChange: () => void; label: ReactNode; className?: string; disabled?: boolean }) {
+export function Checkbox({
+  checked,
+  onChange,
+  label,
+  className,
+  disabled,
+}: {
+  checked: boolean
+  onChange: () => void
+  label: ReactNode
+  className?: string
+  disabled?: boolean
+}) {
   return (
     <label className={cx('check', checked && 'is-checked', disabled && 'is-disabled', className)}>
       <input type="checkbox" checked={checked} onChange={onChange} disabled={disabled} />
@@ -91,7 +115,23 @@ export function Checkbox({ checked, onChange, label, className, disabled }: { ch
 
 /* ---------------------------------------------------------- estrutura */
 
-export function Panel({ title, count, actions, children, className, bodyClassName, id }: { title?: ReactNode; count?: number; actions?: ReactNode; children: ReactNode; className?: string; bodyClassName?: string; id?: string }) {
+export function Panel({
+  title,
+  count,
+  actions,
+  children,
+  className,
+  bodyClassName,
+  id,
+}: {
+  title?: ReactNode
+  count?: number
+  actions?: ReactNode
+  children: ReactNode
+  className?: string
+  bodyClassName?: string
+  id?: string
+}) {
   return (
     <section className={cx('panel', className)} aria-labelledby={title && id ? `${id}-t` : undefined}>
       {(title || actions) && (
@@ -125,7 +165,19 @@ export function PageHeader({ section, title, description, actions }: { section: 
   )
 }
 
-export function EmptyState({ icon: Icon, title, children, action, compact }: { icon: LucideIcon; title: string; children?: ReactNode; action?: ReactNode; compact?: boolean }) {
+export function EmptyState({
+  icon: Icon,
+  title,
+  children,
+  action,
+  compact,
+}: {
+  icon: LucideIcon
+  title: string
+  children?: ReactNode
+  action?: ReactNode
+  compact?: boolean
+}) {
   return (
     <div className={cx('empty', compact && 'empty--compact')}>
       <span className="empty__icon" aria-hidden>
@@ -149,13 +201,32 @@ export function Ref({ children }: { children: ReactNode }) {
 export function ProgressBar({ value, total, label, tone = 'teal' }: { value: number; total: number; label?: string; tone?: 'teal' | 'navy' }) {
   const pct = total > 0 ? Math.round((value / total) * 100) : 0
   return (
-    <span className={cx('bar', `bar--${tone}`)} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct} aria-label={label ?? `${pct}% concluído`}>
+    <span
+      className={cx('bar', `bar--${tone}`)}
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={pct}
+      aria-label={label ?? `${pct}% concluído`}
+    >
       <span className="bar__fill" style={{ width: `${pct}%` }} />
     </span>
   )
 }
 
-export function ProgressRing({ value, total, size = 44, stroke = 4, children }: { value: number; total: number; size?: number; stroke?: number; children?: ReactNode }) {
+export function ProgressRing({
+  value,
+  total,
+  size = 44,
+  stroke = 4,
+  children,
+}: {
+  value: number
+  total: number
+  size?: number
+  stroke?: number
+  children?: ReactNode
+}) {
   const r = (size - stroke) / 2
   const c = 2 * Math.PI * r
   const pct = total > 0 ? value / total : 0
@@ -182,11 +253,28 @@ export function ProgressRing({ value, total, size = 44, stroke = 4, children }: 
   )
 }
 
-export function Segmented<T extends string>({ value, onChange, options, label }: { value: T; onChange: (v: T) => void; options: { id: T; label: string; icon?: LucideIcon }[]; label: string }) {
+export function Segmented<T extends string>({
+  value,
+  onChange,
+  options,
+  label,
+}: {
+  value: T
+  onChange: (v: T) => void
+  options: { id: T; label: string; icon?: LucideIcon }[]
+  label: string
+}) {
   return (
     <div className="seg" role="radiogroup" aria-label={label}>
       {options.map(({ id, label: l, icon: Icon }) => (
-        <button key={id} type="button" role="radio" aria-checked={value === id} className={cx('seg__item', value === id && 'is-active')} onClick={() => onChange(id)}>
+        <button
+          key={id}
+          type="button"
+          role="radio"
+          aria-checked={value === id}
+          className={cx('seg__item', value === id && 'is-active')}
+          onClick={() => onChange(id)}
+        >
           {Icon && <Icon aria-hidden size={15} />}
           <span>{l}</span>
         </button>
@@ -199,7 +287,16 @@ export function Swatches({ value, onChange, colors, label }: { value: string; on
   return (
     <div className="swatches" role="radiogroup" aria-label={label}>
       {colors.map((c) => (
-        <button key={c} type="button" role="radio" aria-checked={value === c} aria-label={c} className={cx('swatch', value === c && 'is-active')} style={{ ['--c' as string]: c }} onClick={() => onChange(c)} />
+        <button
+          key={c}
+          type="button"
+          role="radio"
+          aria-checked={value === c}
+          aria-label={c}
+          className={cx('swatch', value === c && 'is-active')}
+          style={{ ['--c' as string]: c }}
+          onClick={() => onChange(c)}
+        />
       ))}
     </div>
   )

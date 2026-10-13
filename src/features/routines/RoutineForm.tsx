@@ -90,7 +90,13 @@ export function RoutineForm({ routine, open, onClose, onSaved }: { routine?: Rou
           <Input id={`${id}-n`} autoFocus required value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex.: Planejamento do dia" />
         </Field>
         <Field label="Descrição" htmlFor={`${id}-d`}>
-          <TextArea id={`${id}-d`} rows={2} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Para que serve e como saber que foi bem feita" />
+          <TextArea
+            id={`${id}-d`}
+            rows={2}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Para que serve e como saber que foi bem feita"
+          />
         </Field>
 
         <fieldset className="fieldset">
@@ -108,7 +114,13 @@ export function RoutineForm({ routine, open, onClose, onSaved }: { routine?: Rou
           {kind === 'weekly' && (
             <div className="weekday-picker" role="group" aria-label="Dias da semana">
               {[1, 2, 3, 4, 5, 6, 0].map((d) => (
-                <button key={d} type="button" aria-pressed={days.includes(d)} className={cx('weekday', days.includes(d) && 'is-on')} onClick={() => setDays((s) => (s.includes(d) ? s.filter((x) => x !== d) : [...s, d]))}>
+                <button
+                  key={d}
+                  type="button"
+                  aria-pressed={days.includes(d)}
+                  className={cx('weekday', days.includes(d) && 'is-on')}
+                  onClick={() => setDays((s) => (s.includes(d) ? s.filter((x) => x !== d) : [...s, d]))}
+                >
                   {WEEKDAYS_SHORT[d]}
                 </button>
               ))}
@@ -117,7 +129,15 @@ export function RoutineForm({ routine, open, onClose, onSaved }: { routine?: Rou
           {kind === 'interval' && (
             <div className="interval-row">
               <label htmlFor={`${id}-every`}>A cada</label>
-              <Input id={`${id}-every`} type="number" min={2} max={365} value={every} onChange={(e) => setEvery(Number(e.target.value))} className="input--narrow" />
+              <Input
+                id={`${id}-every`}
+                type="number"
+                min={2}
+                max={365}
+                value={every}
+                onChange={(e) => setEvery(Number(e.target.value))}
+                className="input--narrow"
+              />
               <span>dias, a partir da data de início</span>
             </div>
           )}
@@ -149,10 +169,29 @@ export function RoutineForm({ routine, open, onClose, onSaved }: { routine?: Rou
               {steps.map((s, i) => (
                 <li key={s.id}>
                   <span className="step-editor__n mono">{i + 1}</span>
-                  <Input value={s.title} aria-label={`Etapa ${i + 1}`} onChange={(e) => setSteps((all) => all.map((x) => (x.id === s.id ? { ...x, title: e.target.value } : x)))} />
+                  <Input
+                    value={s.title}
+                    aria-label={`Etapa ${i + 1}`}
+                    onChange={(e) => setSteps((all) => all.map((x) => (x.id === s.id ? { ...x, title: e.target.value } : x)))}
+                  />
                   <Button variant="ghost" size="sm" iconOnly icon={ArrowUp} aria-label="Mover para cima" disabled={i === 0} onClick={() => move(i, -1)} />
-                  <Button variant="ghost" size="sm" iconOnly icon={ArrowDown} aria-label="Mover para baixo" disabled={i === steps.length - 1} onClick={() => move(i, 1)} />
-                  <Button variant="ghost" size="sm" iconOnly icon={Trash2} aria-label={`Remover etapa ${i + 1}`} onClick={() => setSteps((all) => all.filter((x) => x.id !== s.id))} />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    iconOnly
+                    icon={ArrowDown}
+                    aria-label="Mover para baixo"
+                    disabled={i === steps.length - 1}
+                    onClick={() => move(i, 1)}
+                  />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    iconOnly
+                    icon={Trash2}
+                    aria-label={`Remover etapa ${i + 1}`}
+                    onClick={() => setSteps((all) => all.filter((x) => x.id !== s.id))}
+                  />
                 </li>
               ))}
             </ol>

@@ -53,7 +53,12 @@ export function TemplatePage() {
 
   const key = entityKey('template', tpl.number)
   const dirty =
-    name !== tpl.name || description !== tpl.description || objective !== tpl.objective || body !== tpl.body || JSON.stringify(platforms) !== JSON.stringify(tpl.platforms) || JSON.stringify(stages) !== JSON.stringify(tpl.stages)
+    name !== tpl.name ||
+    description !== tpl.description ||
+    objective !== tpl.objective ||
+    body !== tpl.body ||
+    JSON.stringify(platforms) !== JSON.stringify(tpl.platforms) ||
+    JSON.stringify(stages) !== JSON.stringify(tpl.stages)
   const uses = posts.filter((p) => p.templateId === tpl.id)
 
   const save = async () => {
@@ -121,7 +126,15 @@ export function TemplatePage() {
                   label: 'Excluir modelo',
                   danger: true,
                   onSelect: async () => {
-                    if (!(await confirm({ title: `Excluir ${key}?`, message: 'As publicações criadas a partir dele são mantidas.', confirmLabel: 'Excluir', danger: true }))) return
+                    if (
+                      !(await confirm({
+                        title: `Excluir ${key}?`,
+                        message: 'As publicações criadas a partir dele são mantidas.',
+                        confirmLabel: 'Excluir',
+                        danger: true,
+                      }))
+                    )
+                      return
                     await deleteTemplate(tpl.id)
                     navigate('/publicacoes?aba=modelos')
                   },
@@ -146,7 +159,13 @@ export function TemplatePage() {
                 <Input id="tpl-obj" value={objective} onChange={(e) => setObjective(e.target.value)} placeholder="O que publicações deste tipo buscam" />
               </Field>
               <Field label="Plataformas" hint="Qualquer canal: blog, newsletter, rede social, vídeo, podcast, mural interno…">
-                <TagInput label="Plataformas do modelo" value={platforms} onChange={setPlatforms} suggestions={suggestions} placeholder="Digite e pressione Enter" />
+                <TagInput
+                  label="Plataformas do modelo"
+                  value={platforms}
+                  onChange={setPlatforms}
+                  suggestions={suggestions}
+                  placeholder="Digite e pressione Enter"
+                />
               </Field>
             </div>
           </Panel>
@@ -156,11 +175,35 @@ export function TemplatePage() {
               {stages.map((s, i) => (
                 <li key={s.id}>
                   <span className="step-editor__n mono">{i + 1}</span>
-                  <Input value={s.title} aria-label={`Etapa ${i + 1}`} onChange={(e) => setStages((all) => all.map((x) => (x.id === s.id ? { ...x, title: e.target.value } : x)))} />
-                  <Input value={s.description} aria-label={`Descrição da etapa ${i + 1}`} placeholder="Descrição (opcional)" onChange={(e) => setStages((all) => all.map((x) => (x.id === s.id ? { ...x, description: e.target.value } : x)))} />
+                  <Input
+                    value={s.title}
+                    aria-label={`Etapa ${i + 1}`}
+                    onChange={(e) => setStages((all) => all.map((x) => (x.id === s.id ? { ...x, title: e.target.value } : x)))}
+                  />
+                  <Input
+                    value={s.description}
+                    aria-label={`Descrição da etapa ${i + 1}`}
+                    placeholder="Descrição (opcional)"
+                    onChange={(e) => setStages((all) => all.map((x) => (x.id === s.id ? { ...x, description: e.target.value } : x)))}
+                  />
                   <Button variant="ghost" size="sm" iconOnly icon={ArrowUp} aria-label="Mover para cima" disabled={i === 0} onClick={() => move(i, -1)} />
-                  <Button variant="ghost" size="sm" iconOnly icon={ArrowDown} aria-label="Mover para baixo" disabled={i === stages.length - 1} onClick={() => move(i, 1)} />
-                  <Button variant="ghost" size="sm" iconOnly icon={Trash2} aria-label={`Remover etapa ${i + 1}`} onClick={() => setStages((all) => all.filter((x) => x.id !== s.id))} />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    iconOnly
+                    icon={ArrowDown}
+                    aria-label="Mover para baixo"
+                    disabled={i === stages.length - 1}
+                    onClick={() => move(i, 1)}
+                  />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    iconOnly
+                    icon={Trash2}
+                    aria-label={`Remover etapa ${i + 1}`}
+                    onClick={() => setStages((all) => all.filter((x) => x.id !== s.id))}
+                  />
                 </li>
               ))}
             </ol>
@@ -183,7 +226,14 @@ export function TemplatePage() {
           </Panel>
 
           <Panel title="Estrutura do texto">
-            <TextArea rows={10} value={body} onChange={(e) => setBody(e.target.value)} className="textarea--code" aria-label="Estrutura do texto" placeholder={'Gancho\n\nDesenvolvimento\n\nChamada para ação'} />
+            <TextArea
+              rows={10}
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              className="textarea--code"
+              aria-label="Estrutura do texto"
+              placeholder={'Gancho\n\nDesenvolvimento\n\nChamada para ação'}
+            />
             <p className="field__hint">É copiada para cada nova publicação como ponto de partida.</p>
           </Panel>
           {dirty && (

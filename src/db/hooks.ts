@@ -14,11 +14,7 @@ export const useRuns = (): MethodRun[] | undefined => useLiveQuery(() => db.meth
 export const useTemplates = (): PostTemplate[] | undefined => useLiveQuery(() => db.templates.orderBy('number').toArray(), [])
 export const usePosts = (): Post[] | undefined => useLiveQuery(() => db.posts.toArray(), [])
 
-export const useRecentActivity = (limit = 12): Activity[] | undefined =>
-  useLiveQuery(() => db.activity.orderBy('at').reverse().limit(limit).toArray(), [limit])
+export const useRecentActivity = (limit = 12): Activity[] | undefined => useLiveQuery(() => db.activity.orderBy('at').reverse().limit(limit).toArray(), [limit])
 
 export const useEntityActivity = (entityId: ID | undefined): Activity[] =>
-  useLiveQuery(
-    async () => (entityId ? (await db.activity.where('entityId').equals(entityId).sortBy('at')).reverse() : []),
-    [entityId],
-  ) ?? EMPTY
+  useLiveQuery(async () => (entityId ? (await db.activity.where('entityId').equals(entityId).sortBy('at')).reverse() : []), [entityId]) ?? EMPTY

@@ -2,7 +2,19 @@ import { useId, useState } from 'react'
 import { X } from 'lucide-react'
 
 /** Campo de etiquetas livres (ex.: plataformas). Enter ou vírgula adicionam. */
-export function TagInput({ value, onChange, suggestions = [], placeholder, label }: { value: string[]; onChange: (v: string[]) => void; suggestions?: string[]; placeholder?: string; label: string }) {
+export function TagInput({
+  value,
+  onChange,
+  suggestions = [],
+  placeholder,
+  label,
+}: {
+  value: string[]
+  onChange: (v: string[]) => void
+  suggestions?: string[]
+  placeholder?: string
+  label: string
+}) {
   const [draft, setDraft] = useState('')
   const listId = useId()
   const add = (raw: string) => {

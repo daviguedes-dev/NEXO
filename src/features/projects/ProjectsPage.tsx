@@ -43,7 +43,15 @@ export function ProjectsPage() {
         }
       />
       {projects.length === 0 ? (
-        <EmptyState icon={FolderKanban} title="Nenhum projeto" action={<Button variant="primary" icon={Plus} onClick={() => setEditing('new')}>Criar projeto</Button>}>
+        <EmptyState
+          icon={FolderKanban}
+          title="Nenhum projeto"
+          action={
+            <Button variant="primary" icon={Plus} onClick={() => setEditing('new')}>
+              Criar projeto
+            </Button>
+          }
+        >
           Projetos reúnem tarefas com um objetivo comum. O progresso é calculado pelas tarefas concluídas.
         </EmptyState>
       ) : (
@@ -63,13 +71,24 @@ export function ProjectsPage() {
                     trigger={<MoreHorizontal size={16} aria-hidden />}
                     items={[
                       { id: 'edit', label: 'Editar', onSelect: () => setEditing(p) },
-                      ...PROJECT_STATUSES.filter((s) => s.id !== p.status).map((s) => ({ id: s.id, label: `Marcar como ${s.label.toLowerCase()}`, onSelect: () => updateProject(p.id, { status: s.id }) })),
+                      ...PROJECT_STATUSES.filter((s) => s.id !== p.status).map((s) => ({
+                        id: s.id,
+                        label: `Marcar como ${s.label.toLowerCase()}`,
+                        onSelect: () => updateProject(p.id, { status: s.id }),
+                      })),
                       {
                         id: 'del',
                         label: 'Excluir projeto',
                         danger: true,
                         onSelect: async () => {
-                          if (await confirm({ title: `Excluir ${p.name}?`, message: 'As tarefas do projeto são mantidas, apenas perdem o vínculo.', confirmLabel: 'Excluir', danger: true })) {
+                          if (
+                            await confirm({
+                              title: `Excluir ${p.name}?`,
+                              message: 'As tarefas do projeto são mantidas, apenas perdem o vínculo.',
+                              confirmLabel: 'Excluir',
+                              danger: true,
+                            })
+                          ) {
                             await deleteProject(p.id)
                             toast('Projeto excluído')
                           }

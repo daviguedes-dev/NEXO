@@ -16,4 +16,3 @@ export const CREATE = [
   { id: 'post', label: 'Nova publicação', to: '/publicacoes?nova=1', icon: Megaphone },
   { id: 'project', label: 'Novo projeto', to: '/projetos?novo=1', icon: FolderKanban },
 ] as const
-

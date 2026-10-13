@@ -85,7 +85,9 @@ export function PostBoard({ posts, onCreate }: { posts: Post[]; onCreate: (statu
         {POST_STATUSES.map((s) => {
           const items = posts
             .filter((p) => p.status === s.id)
-            .sort((a, b) => (s.id === 'published' ? (b.publishedAt ?? 0) - (a.publishedAt ?? 0) : (a.scheduledDate ?? '9999').localeCompare(b.scheduledDate ?? '9999')))
+            .sort((a, b) =>
+              s.id === 'published' ? (b.publishedAt ?? 0) - (a.publishedAt ?? 0) : (a.scheduledDate ?? '9999').localeCompare(b.scheduledDate ?? '9999'),
+            )
           return (
             <Column key={s.id} id={s.id} label={s.label} hint={s.hint} count={items.length} onCreate={s.id === 'published' ? undefined : () => onCreate(s.id)}>
               {items.map((p) => (
@@ -100,13 +102,27 @@ export function PostBoard({ posts, onCreate }: { posts: Post[]; onCreate: (statu
   )
 }
 
-function Column({ id, label, hint, count, children, onCreate }: { id: PostStatus; label: string; hint: string; count: number; children: React.ReactNode; onCreate?: () => void }) {
+function Column({
+  id,
+  label,
+  hint,
+  count,
+  children,
+  onCreate,
+}: {
+  id: PostStatus
+  label: string
+  hint: string
+  count: number
+  children: React.ReactNode
+  onCreate?: () => void
+}) {
   const { setNodeRef, isOver } = useDroppable({ id })
   return (
     <section ref={setNodeRef} className={cx('board__col', isOver && 'is-over', `board__col--${id}`)} aria-label={`${label}: ${count}`}>
       <header className="board__head">
         <span className={cx('stage-dot', `stage-dot--${id}`)} aria-hidden />
-        <h3 title={hint}>{label}</h3>
+        <h2 title={hint}>{label}</h2>
         <span className="count mono">{count}</span>
         {onCreate && (
           <button type="button" className="btn btn--ghost btn--sm btn--icon board__add" aria-label={`Nova publicação em ${label}`} onClick={onCreate}>
@@ -126,7 +142,15 @@ function Draggable({ post }: { post: Post }) {
     <div ref={setNodeRef} className={cx('drag', isDragging && 'is-dragging')} {...pointer}>
       <PostCard post={post} />
       <div className="drag__tools">
-        <button type="button" ref={setActivatorNodeRef} {...attributes} onKeyDown={onKeyDown as React.KeyboardEventHandler<HTMLButtonElement> | undefined} className="drag__grip" aria-roledescription="alça de arrastar" aria-label={`Mover “${post.title}” entre colunas`}>
+        <button
+          type="button"
+          ref={setActivatorNodeRef}
+          {...attributes}
+          onKeyDown={onKeyDown as React.KeyboardEventHandler<HTMLButtonElement> | undefined}
+          className="drag__grip"
+          aria-roledescription="alça de arrastar"
+          aria-label={`Mover “${post.title}” entre colunas`}
+        >
           <GripVertical size={14} aria-hidden />
         </button>
       </div>

@@ -73,7 +73,11 @@ export function SettingsPage() {
 
   return (
     <div className="page">
-      <PageHeader section="configurações" title="Configurações" description="Seus dados ficam no armazenamento local deste navegador. Faça backups regulares." />
+      <PageHeader
+        section="configurações"
+        title="Configurações"
+        description="Seus dados ficam no armazenamento local deste navegador. Faça backups regulares."
+      />
 
       <div className="settings">
         <Panel title="Backup e restauração">
@@ -120,7 +124,11 @@ export function SettingsPage() {
             <dt>
               <ShieldCheck size={14} aria-hidden /> Proteção
             </dt>
-            <dd>{storage.persisted ? 'Persistente — o navegador não apaga os dados para liberar espaço.' : 'Padrão — o navegador pode liberar espaço em situações extremas.'}</dd>
+            <dd>
+              {storage.persisted
+                ? 'Persistente — o navegador não apaga os dados para liberar espaço.'
+                : 'Padrão — o navegador pode liberar espaço em situações extremas.'}
+            </dd>
           </dl>
           {!storage.persisted && navigator.storage?.persist && (
             <Button
@@ -148,9 +156,18 @@ export function SettingsPage() {
                     label={`Cor da etiqueta ${l.name}`}
                     triggerClassName="swatch-trigger"
                     trigger={<span className="swatch-trigger__dot" style={{ background: l.color }} />}
-                    items={SWATCHES.map((c) => ({ id: c, label: <span className="dot" style={{ background: c }} />, selected: c === l.color, onSelect: () => updateLabel(l.id, { color: c }) }))}
+                    items={SWATCHES.map((c) => ({
+                      id: c,
+                      label: <span className="dot" style={{ background: c }} />,
+                      selected: c === l.color,
+                      onSelect: () => updateLabel(l.id, { color: c }),
+                    }))}
                   />
-                  <Input defaultValue={l.name} aria-label="Nome da etiqueta" onBlur={(e) => e.target.value.trim() && e.target.value !== l.name && updateLabel(l.id, { name: e.target.value.trim() })} />
+                  <Input
+                    defaultValue={l.name}
+                    aria-label="Nome da etiqueta"
+                    onBlur={(e) => e.target.value.trim() && e.target.value !== l.name && updateLabel(l.id, { name: e.target.value.trim() })}
+                  />
                   <Button
                     variant="ghost"
                     size="sm"
@@ -158,7 +175,15 @@ export function SettingsPage() {
                     icon={Trash2}
                     aria-label={`Excluir etiqueta ${l.name}`}
                     onClick={async () => {
-                      if (await confirm({ title: `Excluir “${l.name}”?`, message: 'A etiqueta será removida de todas as tarefas.', confirmLabel: 'Excluir', danger: true })) await deleteLabel(l.id)
+                      if (
+                        await confirm({
+                          title: `Excluir “${l.name}”?`,
+                          message: 'A etiqueta será removida de todas as tarefas.',
+                          confirmLabel: 'Excluir',
+                          danger: true,
+                        })
+                      )
+                        await deleteLabel(l.id)
                     }}
                   />
                 </li>
@@ -176,7 +201,15 @@ export function SettingsPage() {
             <Button
               icon={Database}
               onClick={async () => {
-                if (!(await confirm({ title: 'Carregar exemplos?', message: 'Todos os dados atuais serão substituídos. Exporte um backup antes, se necessário.', confirmLabel: 'Substituir por exemplos', danger: true }))) return
+                if (
+                  !(await confirm({
+                    title: 'Carregar exemplos?',
+                    message: 'Todos os dados atuais serão substituídos. Exporte um backup antes, se necessário.',
+                    confirmLabel: 'Substituir por exemplos',
+                    danger: true,
+                  }))
+                )
+                  return
                 await loadExampleData()
                 toast('Dados de exemplo carregados')
               }}
@@ -193,7 +226,15 @@ export function SettingsPage() {
               variant="danger"
               icon={Trash2}
               onClick={async () => {
-                if (!(await confirm({ title: 'Apagar tudo?', message: 'Esta ação não pode ser desfeita. Recomendamos exportar um backup antes.', confirmLabel: 'Apagar todos os dados', danger: true }))) return
+                if (
+                  !(await confirm({
+                    title: 'Apagar tudo?',
+                    message: 'Esta ação não pode ser desfeita. Recomendamos exportar um backup antes.',
+                    confirmLabel: 'Apagar todos os dados',
+                    danger: true,
+                  }))
+                )
+                  return
                 await clearAll()
                 toast('Todos os dados foram apagados')
               }}

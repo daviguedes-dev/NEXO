@@ -124,9 +124,7 @@ export async function toggleRunItem(runId: ID, stepId: ID, itemId: ID) {
   await db.transaction('rw', TX, async () => {
     const run = await db.methodRuns.get(runId)
     if (!run || run.status !== 'active') return
-    const steps = run.steps.map((s) =>
-      s.id !== stepId ? s : { ...s, checklist: s.checklist.map((c) => (c.id === itemId ? { ...c, done: !c.done } : c)) },
-    )
+    const steps = run.steps.map((s) => (s.id !== stepId ? s : { ...s, checklist: s.checklist.map((c) => (c.id === itemId ? { ...c, done: !c.done } : c)) }))
     await db.methodRuns.update(runId, { steps, updatedAt: Date.now() })
   })
 }

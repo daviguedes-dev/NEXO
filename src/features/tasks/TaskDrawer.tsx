@@ -35,7 +35,12 @@ export function TaskDrawer({ task, labels, projects, onClose }: Props) {
     setNotes(task?.notes ?? '')
   }, [task?.id, task?.title, task?.notes])
 
-  if (!task) return <Dialog open={false} onClose={onClose} title="">{null}</Dialog>
+  if (!task)
+    return (
+      <Dialog open={false} onClose={onClose} title="">
+        {null}
+      </Dialog>
+    )
 
   const doneSubs = task.subtasks.filter((s) => s.done).length
   const saveTitle = () => {
@@ -128,7 +133,9 @@ export function TaskDrawer({ task, labels, projects, onClose }: Props) {
             </dt>
             <dd className="props__with-icon">
               <Input id={`${id}-due`} type="date" value={task.dueDate ?? ''} onChange={(e) => updateTask(task.id, { dueDate: e.target.value || null })} />
-              {task.dueDate && <Button variant="ghost" size="sm" iconOnly icon={X} aria-label="Remover prazo" onClick={() => updateTask(task.id, { dueDate: null })} />}
+              {task.dueDate && (
+                <Button variant="ghost" size="sm" iconOnly icon={X} aria-label="Remover prazo" onClick={() => updateTask(task.id, { dueDate: null })} />
+              )}
             </dd>
           </div>
           <div className="props__row">
@@ -190,8 +197,24 @@ export function TaskDrawer({ task, labels, projects, onClose }: Props) {
                   style={{ textDecoration: s.done ? 'line-through' : undefined }}
                 />
                 <span className="subtask__tools">
-                  <Button variant="ghost" size="sm" iconOnly icon={ArrowUp} aria-label="Mover para cima" disabled={i === 0} onClick={() => moveSubtask(task.id, s.id, -1)} />
-                  <Button variant="ghost" size="sm" iconOnly icon={ArrowDown} aria-label="Mover para baixo" disabled={i === task.subtasks.length - 1} onClick={() => moveSubtask(task.id, s.id, 1)} />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    iconOnly
+                    icon={ArrowUp}
+                    aria-label="Mover para cima"
+                    disabled={i === 0}
+                    onClick={() => moveSubtask(task.id, s.id, -1)}
+                  />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    iconOnly
+                    icon={ArrowDown}
+                    aria-label="Mover para baixo"
+                    disabled={i === task.subtasks.length - 1}
+                    onClick={() => moveSubtask(task.id, s.id, 1)}
+                  />
                   <Button variant="ghost" size="sm" iconOnly icon={Trash2} aria-label={`Remover ${s.title}`} onClick={() => removeSubtask(task.id, s.id)} />
                 </span>
               </li>
@@ -207,7 +230,12 @@ export function TaskDrawer({ task, labels, projects, onClose }: Props) {
             }}
           >
             <Plus size={15} aria-hidden />
-            <input value={newSub} onChange={(e) => setNewSub(e.target.value)} placeholder="Adicionar subtarefa e pressionar Enter" aria-label="Nova subtarefa" />
+            <input
+              value={newSub}
+              onChange={(e) => setNewSub(e.target.value)}
+              placeholder="Adicionar subtarefa e pressionar Enter"
+              aria-label="Nova subtarefa"
+            />
           </form>
         </section>
 

@@ -29,9 +29,7 @@ export function RoutinesPage() {
 
   const active = useMemo(() => (routines ?? []).filter((r) => !r.archived), [routines])
   const archived = (routines ?? []).filter((r) => r.archived)
-  const dayList = active
-    .filter((r) => isScheduled(r, day))
-    .sort((a, b) => (a.time ?? '99:99').localeCompare(b.time ?? '99:99'))
+  const dayList = active.filter((r) => isScheduled(r, day)).sort((a, b) => (a.time ?? '99:99').localeCompare(b.time ?? '99:99'))
   const dayLogs = new Map(logs.filter((l) => l.date === day).map((l) => [l.routineId, l]))
   const dayDone = dayList.filter((r) => dayLogs.get(r.id)?.status === 'done').length
   const last14 = Array.from({ length: 14 }, (_, i) => addDays(today, i - 13))
@@ -51,7 +49,15 @@ export function RoutinesPage() {
       />
 
       {routines && routines.length === 0 ? (
-        <EmptyState icon={Repeat2} title="Nenhuma rotina configurada" action={<Button variant="primary" icon={Plus} onClick={() => setCreating(true)}>Criar rotina</Button>}>
+        <EmptyState
+          icon={Repeat2}
+          title="Nenhuma rotina configurada"
+          action={
+            <Button variant="primary" icon={Plus} onClick={() => setCreating(true)}>
+              Criar rotina
+            </Button>
+          }
+        >
           Defina rotinas diárias, semanais ou a cada N dias, com horário e etapas. Cada execução fica registrada e alimenta o mapa de consistência.
         </EmptyState>
       ) : (
@@ -65,7 +71,15 @@ export function RoutinesPage() {
                   {day === today ? 'Hoje' : formatLongDate(day)}
                   {day === today && <span className="muted"> · {formatLongDate(day)}</span>}
                 </span>
-                <Button variant="ghost" size="sm" iconOnly icon={ChevronRight} aria-label="Próximo dia" disabled={day >= today} onClick={() => setDay(addDays(day, 1))} />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  iconOnly
+                  icon={ChevronRight}
+                  aria-label="Próximo dia"
+                  disabled={day >= today}
+                  onClick={() => setDay(addDays(day, 1))}
+                />
               </span>
             }
             actions={
@@ -80,7 +94,10 @@ export function RoutinesPage() {
           >
             {day !== today && (
               <p className="day-panel__note">
-                Registrando execuções de um dia anterior. <button className="link" onClick={() => setDay(today)}>Voltar para hoje</button>
+                Registrando execuções de um dia anterior.{' '}
+                <button className="link" onClick={() => setDay(today)}>
+                  Voltar para hoje
+                </button>
               </p>
             )}
             {dayList.length === 0 ? (
@@ -149,7 +166,13 @@ export function RoutinesPage() {
                               return (
                                 <span
                                   key={d}
-                                  className={cx('dot-day', ok && 'is-done', sched && !ok && d < today && 'is-missed', !sched && 'is-off', d === today && 'is-today')}
+                                  className={cx(
+                                    'dot-day',
+                                    ok && 'is-done',
+                                    sched && !ok && d < today && 'is-missed',
+                                    !sched && 'is-off',
+                                    d === today && 'is-today',
+                                  )}
                                   title={`${WEEKDAYS_SHORT[weekday(d)]} ${d.slice(8)}/${d.slice(5, 7)}: ${ok ? 'concluída' : sched ? (d === today ? 'pendente' : 'não realizada') : 'não prevista'}`}
                                 />
                               )

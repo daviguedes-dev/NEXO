@@ -83,7 +83,12 @@ export function PublishingPage() {
 
       <nav className="tabs" aria-label="Visualizações de publicações">
         {TABS.map((t) => (
-          <Link key={t.id} to={t.id === 'fluxo' ? '/publicacoes' : `/publicacoes?aba=${t.id}`} className={cx('tabs__item', tab === t.id && 'is-active')} aria-current={tab === t.id ? 'page' : undefined}>
+          <Link
+            key={t.id}
+            to={t.id === 'fluxo' ? '/publicacoes' : `/publicacoes?aba=${t.id}`}
+            className={cx('tabs__item', tab === t.id && 'is-active')}
+            aria-current={tab === t.id ? 'page' : undefined}
+          >
             <t.icon size={15} aria-hidden />
             {t.label}
             {t.id === 'modelos' && <span className="count mono">{templates.filter((x) => !x.archived).length}</span>}
@@ -115,7 +120,15 @@ export function PublishingPage() {
         <PostCalendar posts={posts ?? []} onCreate={(d) => setCreating({ scheduledDate: d })} />
       ) : tab === 'modelos' ? (
         templates.length === 0 ? (
-          <EmptyState icon={LayoutTemplate} title="Nenhum modelo" action={<Button variant="primary" icon={Plus} onClick={newTemplate}>Criar modelo</Button>}>
+          <EmptyState
+            icon={LayoutTemplate}
+            title="Nenhum modelo"
+            action={
+              <Button variant="primary" icon={Plus} onClick={newTemplate}>
+                Criar modelo
+              </Button>
+            }
+          >
             Um modelo guarda o “método de postagem”: etapas de produção, estrutura do texto, objetivo e plataformas.
           </EmptyState>
         ) : (
@@ -212,7 +225,13 @@ export function PublishingPage() {
         </Panel>
       )}
 
-      <NewPostDialog open={!!creating} defaults={creating ?? undefined} templates={templates} onClose={() => setCreating(null)} onCreated={(n) => navigate(`/publicacoes/${n}${sp.toString() ? `?${sp}` : ''}`)} />
+      <NewPostDialog
+        open={!!creating}
+        defaults={creating ?? undefined}
+        templates={templates}
+        onClose={() => setCreating(null)}
+        onCreated={(n) => navigate(`/publicacoes/${n}${sp.toString() ? `?${sp}` : ''}`)}
+      />
       <PostDrawer post={selected} templates={templates} platformSuggestions={platformSuggestions} onClose={() => navigate(back)} />
     </div>
   )

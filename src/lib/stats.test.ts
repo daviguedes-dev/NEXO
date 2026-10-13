@@ -3,8 +3,18 @@ import type { Routine, RoutineLog } from '../db/types'
 import { contributionMap, currentDayStreak, intensity, routineStats } from './stats'
 
 const routine: Routine = {
-  id: 'r1', number: 1, name: 'Teste', description: '', frequency: { kind: 'daily' }, time: null, priority: 'medium',
-  steps: [], startDate: '2026-10-01', archived: false, createdAt: 0, updatedAt: 0,
+  id: 'r1',
+  number: 1,
+  name: 'Teste',
+  description: '',
+  frequency: { kind: 'daily' },
+  time: null,
+  priority: 'medium',
+  steps: [],
+  startDate: '2026-10-01',
+  archived: false,
+  createdAt: 0,
+  updatedAt: 0,
 }
 const done = (date: string): RoutineLog => ({ id: date, routineId: 'r1', date, steps: [], status: 'done', note: '', completedAt: 1, updatedAt: 1 })
 

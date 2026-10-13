@@ -10,7 +10,19 @@ import { Button, Field, Input, Segmented, TextArea } from '../../components/ui'
 
 const blankStep = (): MethodStep => ({ id: uid(), title: '', description: '', checklist: [] })
 
-export function MethodForm({ method, open, onClose, categories, onSaved }: { method?: Method; open: boolean; onClose: () => void; categories: string[]; onSaved?: (m: Method) => void }) {
+export function MethodForm({
+  method,
+  open,
+  onClose,
+  categories,
+  onSaved,
+}: {
+  method?: Method
+  open: boolean
+  onClose: () => void
+  categories: string[]
+  onSaved?: (m: Method) => void
+}) {
   const id = useId()
   const toast = useToast()
   const [title, setTitle] = useState('')
@@ -109,7 +121,14 @@ export function MethodForm({ method, open, onClose, categories, onSaved }: { met
             />
           </div>
           {docMode === 'edit' ? (
-            <TextArea id={`${id}-doc`} rows={6} value={doc} onChange={(e) => setDoc(e.target.value)} className="textarea--code" placeholder={'## Quando usar\n\n## Resultado esperado\n- …'} />
+            <TextArea
+              id={`${id}-doc`}
+              rows={6}
+              value={doc}
+              onChange={(e) => setDoc(e.target.value)}
+              className="textarea--code"
+              placeholder={'## Quando usar\n\n## Resultado esperado\n- …'}
+            />
           ) : (
             <div className="doc-preview">{doc.trim() ? <Markdown source={doc} /> : <p className="muted">Nada escrito ainda.</p>}</div>
           )}
@@ -123,12 +142,46 @@ export function MethodForm({ method, open, onClose, categories, onSaved }: { met
               <li key={s.id} className="mstep-edit">
                 <div className="mstep-edit__head">
                   <span className="step-editor__n mono">{String(i + 1).padStart(2, '0')}</span>
-                  <Input value={s.title} aria-label={`Título da etapa ${i + 1}`} placeholder="Nome da etapa" onChange={(e) => patchStep(s.id, { title: e.target.value })} />
-                  <Button variant="ghost" size="sm" iconOnly icon={ArrowUp} aria-label="Mover etapa para cima" disabled={i === 0} onClick={() => moveStep(i, -1)} />
-                  <Button variant="ghost" size="sm" iconOnly icon={ArrowDown} aria-label="Mover etapa para baixo" disabled={i === steps.length - 1} onClick={() => moveStep(i, 1)} />
-                  <Button variant="ghost" size="sm" iconOnly icon={Trash2} aria-label={`Remover etapa ${i + 1}`} onClick={() => setSteps((all) => all.filter((x) => x.id !== s.id))} />
+                  <Input
+                    value={s.title}
+                    aria-label={`Título da etapa ${i + 1}`}
+                    placeholder="Nome da etapa"
+                    onChange={(e) => patchStep(s.id, { title: e.target.value })}
+                  />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    iconOnly
+                    icon={ArrowUp}
+                    aria-label="Mover etapa para cima"
+                    disabled={i === 0}
+                    onClick={() => moveStep(i, -1)}
+                  />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    iconOnly
+                    icon={ArrowDown}
+                    aria-label="Mover etapa para baixo"
+                    disabled={i === steps.length - 1}
+                    onClick={() => moveStep(i, 1)}
+                  />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    iconOnly
+                    icon={Trash2}
+                    aria-label={`Remover etapa ${i + 1}`}
+                    onClick={() => setSteps((all) => all.filter((x) => x.id !== s.id))}
+                  />
                 </div>
-                <Input value={s.description} aria-label={`Descrição da etapa ${i + 1}`} placeholder="Descrição (opcional)" onChange={(e) => patchStep(s.id, { description: e.target.value })} className="mstep-edit__desc" />
+                <Input
+                  value={s.description}
+                  aria-label={`Descrição da etapa ${i + 1}`}
+                  placeholder="Descrição (opcional)"
+                  onChange={(e) => patchStep(s.id, { description: e.target.value })}
+                  className="mstep-edit__desc"
+                />
                 <ul className="mstep-edit__checklist">
                   {s.checklist.map((c) => (
                     <li key={c.id}>
@@ -138,7 +191,14 @@ export function MethodForm({ method, open, onClose, categories, onSaved }: { met
                         aria-label="Item do checklist"
                         onChange={(e) => patchStep(s.id, { checklist: s.checklist.map((x) => (x.id === c.id ? { ...x, text: e.target.value } : x)) })}
                       />
-                      <Button variant="ghost" size="sm" iconOnly icon={X} aria-label="Remover item" onClick={() => patchStep(s.id, { checklist: s.checklist.filter((x) => x.id !== c.id) })} />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        iconOnly
+                        icon={X}
+                        aria-label="Remover item"
+                        onClick={() => patchStep(s.id, { checklist: s.checklist.filter((x) => x.id !== c.id) })}
+                      />
                     </li>
                   ))}
                   <li className="inline-add">

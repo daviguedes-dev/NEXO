@@ -13,7 +13,12 @@
   line-height: 1;
   white-space: nowrap;
   text-decoration: none;
-  transition: background-color 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s, transform 0.1s;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s,
+    color 0.15s,
+    box-shadow 0.15s,
+    transform 0.1s;
   user-select: none;
 }
 .btn:active:not(:disabled) {
@@ -152,7 +157,9 @@
   border-radius: var(--radius);
   background: var(--surface);
   font-size: 14px;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 .input::placeholder,
 .textarea::placeholder {
@@ -254,7 +261,9 @@ input[type='time'].input {
   display: grid;
   place-items: center;
   margin-top: 1px;
-  transition: background-color 0.15s, border-color 0.15s;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
 }
 .check__box svg {
   width: 13px;
@@ -344,7 +353,9 @@ input[type='time'].input {
   transform: scale(1.1);
 }
 .swatch.is-active {
-  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--c);
+  box-shadow:
+    0 0 0 2px var(--surface),
+    0 0 0 4px var(--c);
 }
 .swatch-trigger {
   width: 28px;

@@ -6,7 +6,15 @@ export function StatusIcon({ status, size = 16, title }: { status: TaskStatus; s
   const color = `var(--st-${status})`
   const label = taskStatusLabel(status)
   return (
-    <svg className="status-icon" width={size} height={size} viewBox="0 0 16 16" role={title ? 'img' : undefined} aria-label={title ? label : undefined} aria-hidden={title ? undefined : true}>
+    <svg
+      className="status-icon"
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      role={title ? 'img' : undefined}
+      aria-label={title ? label : undefined}
+      aria-hidden={title ? undefined : true}
+    >
       {status === 'backlog' && <circle cx="8" cy="8" r="6" fill="none" stroke={color} strokeWidth="1.6" strokeDasharray="2.2 2.1" />}
       {status === 'todo' && <circle cx="8" cy="8" r="6" fill="none" stroke={color} strokeWidth="1.6" />}
       {status === 'doing' && (
@@ -34,7 +42,15 @@ export function StatusIcon({ status, size = 16, title }: { status: TaskStatus; s
 /** Barras de sinal para prioridade; urgente ganha um marcador sólido. */
 export function PriorityIcon({ priority, size = 16, title }: { priority: Priority; size?: number; title?: boolean }) {
   const label = priorityLabel(priority)
-  const common = { className: 'priority-icon', width: size, height: size, viewBox: '0 0 16 16', role: title ? 'img' : undefined, 'aria-label': title ? label : undefined, 'aria-hidden': title ? undefined : true }
+  const common = {
+    className: 'priority-icon',
+    width: size,
+    height: size,
+    viewBox: '0 0 16 16',
+    role: title ? 'img' : undefined,
+    'aria-label': title ? label : undefined,
+    'aria-hidden': title ? undefined : true,
+  }
   if (priority === 'urgent')
     return (
       <svg {...common}>

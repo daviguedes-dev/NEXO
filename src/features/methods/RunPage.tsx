@@ -63,7 +63,9 @@ export function RunPage() {
               <span>{run.methodTitle} (método excluído)</span>
             )}{' '}
             <span className="version mono">v{run.methodVersion}</span>
-            {method && method.version !== run.methodVersion && <span className="muted">· o método já está na v{method.version}; esta execução segue a versão em que foi iniciada</span>}
+            {method && method.version !== run.methodVersion && (
+              <span className="muted">· o método já está na v{method.version}; esta execução segue a versão em que foi iniciada</span>
+            )}
           </span>
         }
         actions={
@@ -141,7 +143,14 @@ export function RunPage() {
         </div>
         <aside className="split__side">
           <Panel title="Anotações da execução">
-            <TextArea rows={6} value={notes} onChange={(e) => setNotes(e.target.value)} onBlur={() => notes !== run.notes && updateRun(run.id, { notes })} placeholder="Decisões, valores, problemas encontrados…" aria-label="Anotações" />
+            <TextArea
+              rows={6}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              onBlur={() => notes !== run.notes && updateRun(run.id, { notes })}
+              placeholder="Decisões, valores, problemas encontrados…"
+              aria-label="Anotações"
+            />
             <p className="field__hint">Ficam só nesta execução; o método original não muda.</p>
           </Panel>
           <Panel title="Registro">

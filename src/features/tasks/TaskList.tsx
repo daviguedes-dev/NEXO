@@ -30,7 +30,12 @@ export function TaskList({ tasks, labels, projects, grouped, search }: Props) {
         {t.title}
       </Link>
       <span className="task-row__labels">
-        {t.labels.map((id) => labelMap.get(id)).filter(Boolean).map((l) => <LabelChip key={l!.id} label={l!} />)}
+        {t.labels
+          .map((id) => labelMap.get(id))
+          .filter(Boolean)
+          .map((l) => (
+            <LabelChip key={l!.id} label={l!} />
+          ))}
       </span>
       <span className="task-row__meta">
         <SubtaskCount task={t} />
@@ -50,7 +55,12 @@ export function TaskList({ tasks, labels, projects, grouped, search }: Props) {
         const isCollapsed = collapsed[s.id] ?? false
         return (
           <section key={s.id} className="task-group panel" aria-label={s.label}>
-            <button type="button" className="task-group__head" aria-expanded={!isCollapsed} onClick={() => setCollapsed((c) => ({ ...c, [s.id]: !isCollapsed }))}>
+            <button
+              type="button"
+              className="task-group__head"
+              aria-expanded={!isCollapsed}
+              onClick={() => setCollapsed((c) => ({ ...c, [s.id]: !isCollapsed }))}
+            >
               <ChevronDown size={15} className={cx('chev', isCollapsed && 'is-collapsed')} aria-hidden />
               <StatusIcon status={s.id} />
               <span className="task-group__name">{s.label}</span>

@@ -26,6 +26,7 @@ export function RoutineDetailPage() {
   const history = useEntityActivity(routine?.id)
   const [editing, setEditing] = useState(false)
   const [backfill, setBackfill] = useState<ISODate>('')
+  const [shown, setShown] = useState(12)
   const confirm = useConfirm()
   const toast = useToast()
   const navigate = useNavigate()
@@ -55,7 +56,9 @@ export function RoutineDetailPage() {
             {routine.archived && <span className="pill pill--paused">Arquivada</span>}
           </>
         }
-        description={[describeFrequency(routine.frequency), routine.time && `às ${routine.time}`, `prioridade ${priorityLabel(routine.priority).toLowerCase()}`].filter(Boolean).join(' · ')}
+        description={[describeFrequency(routine.frequency), routine.time && `às ${routine.time}`, `prioridade ${priorityLabel(routine.priority).toLowerCase()}`]
+          .filter(Boolean)
+          .join(' · ')}
         actions={
           <>
             <Button icon={Pencil} onClick={() => setEditing(true)}>
@@ -97,32 +100,42 @@ export function RoutineDetailPage() {
         }
       />
 
-      <dl className="stats">
-        <div className="stat">
-          <dt>Sequência atual</dt>
-          <dd className="mono">{s.streak}</dd>
-        </div>
-        <div className="stat">
-          <dt>Melhor sequência</dt>
-          <dd className="mono">{s.best}</dd>
-        </div>
-        <div className="stat">
-          <dt>Últimos 30 dias</dt>
-          <dd className="mono">{s.rate === null ? '—' : `${Math.round(s.rate * 100)}%`}</dd>
-          {s.rate !== null && (
-            <span className="stat__sub">
-              {s.done30} de {s.scheduled30} previstas
-            </span>
-          )}
-        </div>
-        <div className="stat">
-          <dt>Execuções registradas</dt>
-          <dd className="mono">{s.totalDone}</dd>
-        </div>
-      </dl>
-
-      <Panel title="Consistência" className="panel--flush-graph">
-        <ContributionGraph data={heat} today={today} weeks={30} unit={['execução', 'execuções']} breakdown={false} />
+      <Panel title="Consistência">
+        <ContributionGraph
+          data={heat}
+          today={today}
+          fit
+          unit={['execução', 'execuções']}
+          breakdown={false}
+          aside={
+            <dl className="heat-facts">
+              <div>
+                <dt>Sequência atual</dt>
+                <dd className="mono">{s.streak}</dd>
+              </div>
+              <div>
+                <dt>Melhor sequência</dt>
+                <dd className="mono">{s.best}</dd>
+              </div>
+              <div>
+                <dt>Últimos 30 dias</dt>
+                <dd className="mono">
+                  {s.rate === null ? '—' : `${Math.round(s.rate * 100)}%`}
+                  {s.rate !== null && (
+                    <small>
+                      {' '}
+                      {s.done30}/{s.scheduled30}
+                    </small>
+                  )}
+                </dd>
+              </div>
+              <div>
+                <dt>Execuções registradas</dt>
+                <dd className="mono">{s.totalDone}</dd>
+              </div>
+            </dl>
+          }
+        />
       </Panel>
 
       <div className="split">
@@ -142,7 +155,7 @@ export function RoutineDetailPage() {
               <p className="muted">Nenhuma execução registrada ainda.</p>
             ) : (
               <ol className="log-list">
-                {logs.map((l) => {
+                {logs.slice(0, shown).map((l) => {
                   const done = l.steps.filter((x) => x.done).length
                   return (
                     <li key={l.id} className={cx('log', l.status === 'done' && 'is-done')}>
@@ -175,6 +188,11 @@ export function RoutineDetailPage() {
                   )
                 })}
               </ol>
+            )}
+            {logs.length > shown && (
+              <Button variant="ghost" size="sm" onClick={() => setShown((n) => n + 20)}>
+                Mostrar mais ({logs.length - shown} anteriores)
+              </Button>
             )}
           </Panel>
         </div>

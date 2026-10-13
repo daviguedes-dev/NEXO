@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import type { ISODate } from '../db/types'
 import { addDays, formatFullDate, parseISODate, startOfWeek, WEEKDAYS_SHORT } from '../lib/dates'
 import { emptyDay, intensity, type DayContribution } from '../lib/stats'
@@ -12,13 +12,33 @@ interface Props {
   unit?: [singular: string, plural: string]
   breakdown?: boolean
   compact?: boolean
+  /** Ajusta a quantidade de semanas à largura disponível (até `weeks`). */
+  fit?: boolean
+  /** Resumo exibido ao lado do mapa (abaixo dele em telas estreitas). */
+  aside?: ReactNode
 }
 
 const MONTHS = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
 
 /** Mapa de consistência inspirado no gráfico de contribuições: uma coluna por semana, um quadrado por dia. */
-export function ContributionGraph({ data, today, weeks = 53, unit = ['entrega', 'entregas'], breakdown = true, compact }: Props) {
+export function ContributionGraph({ data, today, weeks: maxWeeks = 53, unit = ['entrega', 'entregas'], breakdown = true, compact, fit, aside }: Props) {
   const [hover, setHover] = useState<{ date: ISODate; x: number; y: number } | null>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [avail, setAvail] = useState(0)
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!fit || !el || typeof ResizeObserver === 'undefined') return
+    const ro = new ResizeObserver(([entry]) => setAvail(entry.contentRect.width))
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [fit])
+
+  const cell = compact ? 10 : 11
+  const gap = 3
+  const step = cell + gap
+  const left = compact ? 0 : 28
+  const weeks = fit && avail > 0 ? Math.max(12, Math.min(maxWeeks, Math.floor((avail - left) / step))) : maxWeeks
 
   const { columns, max, monthLabels } = useMemo(() => {
     const first = addDays(startOfWeek(today), -(weeks - 1) * 7)
@@ -43,10 +63,6 @@ export function ContributionGraph({ data, today, weeks = 53, unit = ['entrega', 
     return { columns, max, monthLabels }
   }, [data, today, weeks])
 
-  const cell = compact ? 10 : 11
-  const gap = compact ? 3 : 3
-  const step = cell + gap
-  const left = compact ? 0 : 28
   const top = 18
   const width = left + weeks * step
   const height = top + 7 * step
@@ -61,68 +77,95 @@ export function ContributionGraph({ data, today, weeks = 53, unit = ['entrega', 
   const hovered = hover ? (data.get(hover.date) ?? emptyDay()) : null
 
   return (
-    <div className="heat">
-      <div className="heat__scroll">
-        <svg className="heat__svg" width={width} height={height} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`Mapa de consistência das últimas ${weeks} semanas`} onMouseLeave={() => setHover(null)}>
-          {monthLabels.map((m) => (
-            <text key={m.col} x={left + m.col * step} y={11} className="heat__month">
-              {m.label}
-            </text>
-          ))}
-          {!compact &&
-            [1, 3, 5].map((d) => (
-              <text key={d} x={0} y={top + d * step + cell - 2} className="heat__weekday">
-                {WEEKDAYS_SHORT[d]}
+    <div className={aside ? 'heat heat--aside' : 'heat'}>
+      <div className="heat__main">
+        <div className="heat__scroll" ref={scrollRef}>
+          <svg
+            className="heat__svg"
+            width={width}
+            height={height}
+            viewBox={`0 0 ${width} ${height}`}
+            role="img"
+            aria-label={`Mapa de consistência das últimas ${weeks} semanas`}
+            onMouseLeave={() => setHover(null)}
+          >
+            {monthLabels.map((m) => (
+              <text key={m.col} x={left + m.col * step} y={11} className="heat__month">
+                {m.label}
               </text>
             ))}
-          {columns.map((col, w) =>
-            col.map((iso, d) => {
-              if (iso > today) return null
-              const lvl = intensity(data.get(iso)?.total ?? 0, max)
-              return (
-                <rect
-                  key={iso}
-                  x={left + w * step}
-                  y={top + d * step}
-                  width={cell}
-                  height={cell}
-                  rx={2.5}
-                  className={`heat__cell heat__cell--${lvl}${iso === today ? ' is-today' : ''}`}
-                  onMouseEnter={(e) => {
-                    const svg = (e.currentTarget.ownerSVGElement as SVGSVGElement).getBoundingClientRect()
-                    const r = e.currentTarget.getBoundingClientRect()
-                    setHover({ date: iso, x: r.left - svg.left + r.width / 2, y: r.top - svg.top })
-                  }}
-                >
-                  <title>{describe(iso)}</title>
-                </rect>
-              )
-            }),
-          )}
-        </svg>
-        {hover && hovered && (
-          <div className="heat__tip" style={{ left: hover.x, top: hover.y }} aria-hidden>
-            <strong>{describe(hover.date)}</strong>
-            {breakdown && hovered.total > 0 && (
-              <span className="heat__tip-parts">
-                {hovered.tasks > 0 && <span>{hovered.tasks} tarefa{hovered.tasks > 1 ? 's' : ''}</span>}
-                {hovered.routines > 0 && <span>{hovered.routines} rotina{hovered.routines > 1 ? 's' : ''}</span>}
-                {hovered.runs > 0 && <span>{hovered.runs} método{hovered.runs > 1 ? 's' : ''}</span>}
-                {hovered.posts > 0 && <span>{hovered.posts} publicaç{hovered.posts > 1 ? 'ões' : 'ão'}</span>}
-              </span>
+            {!compact &&
+              [1, 3, 5].map((d) => (
+                <text key={d} x={0} y={top + d * step + cell - 2} className="heat__weekday">
+                  {WEEKDAYS_SHORT[d]}
+                </text>
+              ))}
+            {columns.map((col, w) =>
+              col.map((iso, d) => {
+                if (iso > today) return null
+                const lvl = intensity(data.get(iso)?.total ?? 0, max)
+                return (
+                  <rect
+                    key={iso}
+                    x={left + w * step}
+                    y={top + d * step}
+                    width={cell}
+                    height={cell}
+                    rx={2.5}
+                    className={`heat__cell heat__cell--${lvl}${iso === today ? ' is-today' : ''}`}
+                    onMouseEnter={(e) => {
+                      const svg = (e.currentTarget.ownerSVGElement as SVGSVGElement).getBoundingClientRect()
+                      const r = e.currentTarget.getBoundingClientRect()
+                      setHover({ date: iso, x: r.left - svg.left + r.width / 2, y: r.top - svg.top })
+                    }}
+                  >
+                    <title>{describe(iso)}</title>
+                  </rect>
+                )
+              }),
             )}
+          </svg>
+          {hover && hovered && (
+            <div className="heat__tip" style={{ left: hover.x, top: hover.y }} aria-hidden>
+              <strong>{describe(hover.date)}</strong>
+              {breakdown && hovered.total > 0 && (
+                <span className="heat__tip-parts">
+                  {hovered.tasks > 0 && (
+                    <span>
+                      {hovered.tasks} tarefa{hovered.tasks > 1 ? 's' : ''}
+                    </span>
+                  )}
+                  {hovered.routines > 0 && (
+                    <span>
+                      {hovered.routines} rotina{hovered.routines > 1 ? 's' : ''}
+                    </span>
+                  )}
+                  {hovered.runs > 0 && (
+                    <span>
+                      {hovered.runs} método{hovered.runs > 1 ? 's' : ''}
+                    </span>
+                  )}
+                  {hovered.posts > 0 && (
+                    <span>
+                      {hovered.posts} publicaç{hovered.posts > 1 ? 'ões' : 'ão'}
+                    </span>
+                  )}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+        {!compact && (
+          <div className="heat__legend" aria-hidden>
+            <span>Menos</span>
+            {[0, 1, 2, 3, 4].map((l) => (
+              <span key={l} className={`heat__swatch heat__cell--${l}`} />
+            ))}
+            <span>Mais</span>
           </div>
         )}
       </div>
-      {!compact && (
-        <div className="heat__legend" aria-hidden>
-          <span>Menos</span>
-          {[0, 1, 2, 3, 4].map((l) => (
-            <span key={l} className={`heat__swatch heat__cell--${l}`} />
-          ))}
-          <span>Mais</span>
-        </div>
-      )}
+      {aside && <div className="heat__aside">{aside}</div>}
     </div>
   )
 }

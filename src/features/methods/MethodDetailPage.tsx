@@ -167,7 +167,10 @@ export function MethodDetailPage() {
                         <span className="run-list__top">
                           <span className="ref mono">{entityKey('run', r.number)}</span>
                           <span className={cx('pill', `pill--run-${r.status}`)}>{runStatusLabel(r.status)}</span>
-                          <span className={cx('version mono', r.methodVersion !== method.version && 'is-old')} title={r.methodVersion !== method.version ? 'Versão anterior do método' : 'Versão atual'}>
+                          <span
+                            className={cx('version mono', r.methodVersion !== method.version && 'is-old')}
+                            title={r.methodVersion !== method.version ? 'Versão anterior do método' : 'Versão atual'}
+                          >
                             <GitBranch size={11} aria-hidden /> v{r.methodVersion}
                           </span>
                         </span>

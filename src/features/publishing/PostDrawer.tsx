@@ -13,7 +13,17 @@ import { TagInput } from '../../components/TagInput'
 import { Timeline } from '../../components/Timeline'
 import { Button, Checkbox, Field, Input, ProgressBar, Select, TextArea } from '../../components/ui'
 
-export function PostDrawer({ post, templates, platformSuggestions, onClose }: { post: Post | undefined; templates: PostTemplate[]; platformSuggestions: string[]; onClose: () => void }) {
+export function PostDrawer({
+  post,
+  templates,
+  platformSuggestions,
+  onClose,
+}: {
+  post: Post | undefined
+  templates: PostTemplate[]
+  platformSuggestions: string[]
+  onClose: () => void
+}) {
   const history = useEntityActivity(post?.id)
   const confirm = useConfirm()
   const toast = useToast()
@@ -32,7 +42,12 @@ export function PostDrawer({ post, templates, platformSuggestions, onClose }: { 
     setNotes(post?.notes ?? '')
   }, [post?.id, post?.title, post?.objective, post?.body, post?.notes])
 
-  if (!post) return <Dialog open={false} onClose={onClose} title="">{null}</Dialog>
+  if (!post)
+    return (
+      <Dialog open={false} onClose={onClose} title="">
+        {null}
+      </Dialog>
+    )
 
   const key = entityKey('post', post.number)
   const template = templates.find((t) => t.id === post.templateId)
@@ -67,7 +82,15 @@ export function PostDrawer({ post, templates, platformSuggestions, onClose }: { 
           icon={Trash2}
           aria-label="Excluir publicação"
           onClick={async () => {
-            if (!(await confirm({ title: `Excluir ${key}?`, message: 'O registro da exclusão permanece no histórico geral.', confirmLabel: 'Excluir', danger: true }))) return
+            if (
+              !(await confirm({
+                title: `Excluir ${key}?`,
+                message: 'O registro da exclusão permanece no histórico geral.',
+                confirmLabel: 'Excluir',
+                danger: true,
+              }))
+            )
+              return
             onClose()
             await deletePost(post.id)
             toast(`${key} excluída`)
@@ -115,8 +138,23 @@ export function PostDrawer({ post, templates, platformSuggestions, onClose }: { 
             </dt>
             <dd className="props__with-icon">
               <Input id={`${id}-date`} type="date" value={post.scheduledDate ?? ''} onChange={(e) => save({ scheduledDate: e.target.value || null })} />
-              <Input type="time" aria-label="Horário previsto" value={post.scheduledTime ?? ''} onChange={(e) => save({ scheduledTime: e.target.value || null })} className="input--time" />
-              {post.scheduledDate && <Button variant="ghost" size="sm" iconOnly icon={X} aria-label="Remover data" onClick={() => save({ scheduledDate: null, scheduledTime: null })} />}
+              <Input
+                type="time"
+                aria-label="Horário previsto"
+                value={post.scheduledTime ?? ''}
+                onChange={(e) => save({ scheduledTime: e.target.value || null })}
+                className="input--time"
+              />
+              {post.scheduledDate && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  iconOnly
+                  icon={X}
+                  aria-label="Remover data"
+                  onClick={() => save({ scheduledDate: null, scheduledTime: null })}
+                />
+              )}
             </dd>
           </div>
           {post.status === 'published' && post.publishedAt && (
@@ -143,13 +181,25 @@ export function PostDrawer({ post, templates, platformSuggestions, onClose }: { 
           <div className="props__row props__row--top">
             <dt>Plataformas</dt>
             <dd>
-              <TagInput label="Plataformas" value={post.platforms} onChange={(v) => save({ platforms: v })} suggestions={platformSuggestions} placeholder="Ex.: Blog, Newsletter… (Enter para adicionar)" />
+              <TagInput
+                label="Plataformas"
+                value={post.platforms}
+                onChange={(v) => save({ platforms: v })}
+                suggestions={platformSuggestions}
+                placeholder="Ex.: Blog, Newsletter… (Enter para adicionar)"
+              />
             </dd>
           </div>
         </dl>
 
         <Field label="Objetivo" htmlFor={`${id}-obj`}>
-          <Input id={`${id}-obj`} value={objective} onChange={(e) => setObjective(e.target.value)} onBlur={() => objective !== post.objective && save({ objective })} placeholder="O que esta publicação deve alcançar?" />
+          <Input
+            id={`${id}-obj`}
+            value={objective}
+            onChange={(e) => setObjective(e.target.value)}
+            onBlur={() => objective !== post.objective && save({ objective })}
+            placeholder="O que esta publicação deve alcançar?"
+          />
         </Field>
 
         <section className="detail__section" aria-labelledby={`${id}-stages`}>
@@ -170,7 +220,14 @@ export function PostDrawer({ post, templates, platformSuggestions, onClose }: { 
                 <Checkbox checked={s.done} onChange={() => toggleStage(post.id, s.id)} label={s.title} />
                 {s.description && <span className="muted small">{s.description}</span>}
                 <span className="subtask__tools">
-                  <Button variant="ghost" size="sm" iconOnly icon={Trash2} aria-label={`Remover etapa ${s.title}`} onClick={() => save({ stages: post.stages.filter((x) => x.id !== s.id) })} />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    iconOnly
+                    icon={Trash2}
+                    aria-label={`Remover etapa ${s.title}`}
+                    onClick={() => save({ stages: post.stages.filter((x) => x.id !== s.id) })}
+                  />
                 </span>
               </li>
             ))}
@@ -190,11 +247,26 @@ export function PostDrawer({ post, templates, platformSuggestions, onClose }: { 
         </section>
 
         <Field label="Texto" htmlFor={`${id}-body`} hint={<span className="mono">{body.length} caracteres</span>}>
-          <TextArea id={`${id}-body`} rows={8} value={body} onChange={(e) => setBody(e.target.value)} onBlur={() => body !== post.body && save({ body })} className="textarea--code" placeholder="Rascunho do conteúdo" />
+          <TextArea
+            id={`${id}-body`}
+            rows={8}
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            onBlur={() => body !== post.body && save({ body })}
+            className="textarea--code"
+            placeholder="Rascunho do conteúdo"
+          />
         </Field>
 
         <Field label="Observações" htmlFor={`${id}-notes`}>
-          <TextArea id={`${id}-notes`} rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} onBlur={() => notes !== post.notes && save({ notes })} placeholder="Referências, materiais, pendências…" />
+          <TextArea
+            id={`${id}-notes`}
+            rows={3}
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            onBlur={() => notes !== post.notes && save({ notes })}
+            placeholder="Referências, materiais, pendências…"
+          />
         </Field>
 
         <section className="detail__section" aria-labelledby={`${id}-links`}>
@@ -210,7 +282,14 @@ export function PostDrawer({ post, templates, platformSuggestions, onClose }: { 
                   <a href={l.url} target="_blank" rel="noopener noreferrer" className="links__url">
                     {l.url.replace(/^https?:\/\//, '')} <ExternalLink size={12} aria-hidden />
                   </a>
-                  <Button variant="ghost" size="sm" iconOnly icon={X} aria-label="Remover link" onClick={() => save({ links: post.links.filter((x) => x.id !== l.id) })} />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    iconOnly
+                    icon={X}
+                    aria-label="Remover link"
+                    onClick={() => save({ links: post.links.filter((x) => x.id !== l.id) })}
+                  />
                 </li>
               ))}
             </ul>
@@ -224,13 +303,25 @@ export function PostDrawer({ post, templates, platformSuggestions, onClose }: { 
               setLink({ platform: '', url: '' })
             }}
           >
-            <Input value={link.platform} onChange={(e) => setLink({ ...link, platform: e.target.value })} placeholder="Plataforma" aria-label="Plataforma do link" list={`${id}-plat`} />
+            <Input
+              value={link.platform}
+              onChange={(e) => setLink({ ...link, platform: e.target.value })}
+              placeholder="Plataforma"
+              aria-label="Plataforma do link"
+              list={`${id}-plat`}
+            />
             <datalist id={`${id}-plat`}>
               {post.platforms.map((p) => (
                 <option key={p} value={p} />
               ))}
             </datalist>
-            <Input value={link.url} onChange={(e) => setLink({ ...link, url: e.target.value })} placeholder="https://…" aria-label="Endereço do link" type="url" />
+            <Input
+              value={link.url}
+              onChange={(e) => setLink({ ...link, url: e.target.value })}
+              placeholder="https://…"
+              aria-label="Endereço do link"
+              type="url"
+            />
             <Button type="submit" size="sm" disabled={!validUrl}>
               Adicionar
             </Button>

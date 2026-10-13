@@ -48,15 +48,4 @@ export const RUN_STATUSES: { id: RunStatus; label: string }[] = [
 export const runStatusLabel = (s: RunStatus) => RUN_STATUSES.find((x) => x.id === s)?.label ?? s
 
 /** Cores para etiquetas e projetos: tons sóbrios, legíveis sobre branco. */
-export const SWATCHES = [
-  '#14B8A6',
-  '#0EA5E9',
-  '#6366F1',
-  '#A855F7',
-  '#EC4899',
-  '#F43F5E',
-  '#F97316',
-  '#CA8A04',
-  '#16A34A',
-  '#64748B',
-]
+export const SWATCHES = ['#14B8A6', '#0EA5E9', '#6366F1', '#A855F7', '#EC4899', '#F43F5E', '#F97316', '#CA8A04', '#16A34A', '#64748B']
