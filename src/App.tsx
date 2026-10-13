@@ -1,5 +1,5 @@
 import { lazy, Suspense, type ComponentType, type LazyExoticComponent } from 'react'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createHashRouter, RouterProvider } from 'react-router-dom'
 import { FeedbackProvider } from './components/feedback'
 import { Shell } from './features/shell/Shell'
 import { OverviewPage } from './features/overview/OverviewPage'
@@ -26,7 +26,8 @@ const el = (C: ComponentType) => (
   </Suspense>
 )
 
-const router = createBrowserRouter([
+// Rotas com # (/#/tarefas): funcionam em qualquer hospedagem estática, em subpastas e abrindo o arquivo direto
+const router = createHashRouter([
   {
     element: <Shell />,
     children: [

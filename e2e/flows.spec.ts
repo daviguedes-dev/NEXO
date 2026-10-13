@@ -8,7 +8,7 @@ test.describe('Nexo — fluxos principais', () => {
   })
 
   test('tarefa: criar pelo atalho, concluir subtarefa, mudar status e ver o histórico', async ({ page, consoleErrors: _ }) => {
-    await page.goto('/tarefas')
+    await page.goto('/#/tarefas')
     await page.keyboard.press('c')
     const dialog = page.getByRole('dialog', { name: 'Nova tarefa' })
     await dialog.getByLabel('Título').fill('Preparar relatório semanal')
@@ -36,7 +36,7 @@ test.describe('Nexo — fluxos principais', () => {
   })
 
   test('tarefa: filtros ficam na URL e o Kanban move pelo menu de status', async ({ page, consoleErrors: _ }) => {
-    await page.goto('/tarefas?nova=1')
+    await page.goto('/#/tarefas?nova=1')
     await page.getByLabel('Título').fill('Item do quadro')
     await page.getByRole('button', { name: 'Criar tarefa' }).click()
     await page.getByRole('radio', { name: 'Kanban' }).click()
@@ -54,7 +54,7 @@ test.describe('Nexo — fluxos principais', () => {
   })
 
   test('rotina: etapas, conclusão do dia e histórico preservado ao editar', async ({ page, consoleErrors: _ }) => {
-    await page.goto('/rotinas?nova=1')
+    await page.goto('/#/rotinas?nova=1')
     const form = page.getByRole('dialog', { name: 'Nova rotina' })
     await form.getByLabel('Nome').fill('Revisão matinal')
     await form.getByLabel('Nova etapa').fill('Ler e-mails')
@@ -78,7 +78,7 @@ test.describe('Nexo — fluxos principais', () => {
   })
 
   test('método: execução independente da versão de origem', async ({ page, consoleErrors: _ }) => {
-    await page.goto('/metodos?novo=1')
+    await page.goto('/#/metodos?novo=1')
     const form = page.getByRole('dialog', { name: 'Novo método de trabalho' })
     await form.getByLabel('Título', { exact: true }).fill('Fechamento semanal')
     await form.getByLabel('Título da etapa 1').fill('Conferência')
@@ -102,7 +102,7 @@ test.describe('Nexo — fluxos principais', () => {
   })
 
   test('publicação: modelo, fluxo e registro de publicadas', async ({ page, consoleErrors: _ }) => {
-    await page.goto('/publicacoes')
+    await page.goto('/#/publicacoes')
     await page.getByRole('button', { name: 'Novo modelo' }).first().click()
     await expect(page).toHaveURL(/\/publicacoes\/modelos\/1$/)
     await page.getByLabel('Nome', { exact: true }).fill('Boletim mensal')
@@ -125,7 +125,7 @@ test.describe('Nexo — fluxos principais', () => {
   })
 
   test('busca global encontra pela referência', async ({ page, consoleErrors: _ }) => {
-    await page.goto('/tarefas?nova=1')
+    await page.goto('/#/tarefas?nova=1')
     await page.getByLabel('Título').fill('Tarefa encontrável')
     await page.getByRole('button', { name: 'Criar tarefa' }).click()
     await page.keyboard.press('Control+k')
@@ -153,7 +153,7 @@ test.describe('Nexo — fluxos principais', () => {
   })
 
   test('backup exporta um arquivo JSON', async ({ page, consoleErrors: _ }) => {
-    await page.goto('/configuracoes')
+    await page.goto('/#/configuracoes')
     const download = page.waitForEvent('download')
     await page.getByRole('button', { name: 'Exportar backup' }).click()
     expect((await download).suggestedFilename()).toMatch(/^nexo-backup-\d{4}-\d{2}-\d{2}\.json$/)
@@ -181,7 +181,7 @@ test.describe('Nexo — fluxos principais', () => {
       '/publicacoes/modelos/1',
       '/configuracoes',
     ]) {
-      await page.goto(path)
+      await page.goto('/#' + path)
       await expect(page.locator('h1').first()).toBeVisible()
     }
   })

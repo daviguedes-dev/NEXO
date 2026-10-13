@@ -18,6 +18,16 @@ Sistema de organização pessoal e operacional: rotinas, tarefas, métodos de tr
 
 **Atalhos:** `Ctrl/⌘ K` ou `/` busca · `C` nova tarefa · `Esc` fecha painéis.
 
+## Abrir sem instalar nada
+
+Gere (ou baixe) o arquivo único **`Nexo.html`** e abra com duplo clique — tudo (código, estilos, fontes) vai embutido e funciona sem servidor:
+
+```bash
+npm run build:standalone   # cria dist-standalone/Nexo.html
+```
+
+> Abrir o `index.html` da raiz direto no navegador **não funciona** (é o código-fonte): use o `Nexo.html` ou o servidor de desenvolvimento abaixo.
+
 ## Executar localmente
 
 Requer Node.js 20.19+.
@@ -27,14 +37,15 @@ npm install
 npm run dev        # http://localhost:5173
 ```
 
-| Script             | Uso                                                     |
-| ------------------ | ------------------------------------------------------- |
-| `npm run build`    | typecheck + build de produção em `dist/`                |
-| `npm run preview`  | serve o build                                           |
-| `npm run check`    | typecheck, lint, testes unitários e build               |
-| `npm test`         | testes de domínio (Vitest)                              |
-| `npm run test:e2e` | testes de ponta a ponta (Playwright, desktop e celular) |
-| `npm run format`   | Prettier                                                |
+| Script                     | Uso                                                               |
+| -------------------------- | ----------------------------------------------------------------- |
+| `npm run build`            | typecheck + build de produção em `dist/`                          |
+| `npm run build:standalone` | arquivo único `dist-standalone/Nexo.html` (abre com duplo clique) |
+| `npm run preview`          | serve o build                                                     |
+| `npm run check`            | typecheck, lint, testes unitários e build                         |
+| `npm test`                 | testes de domínio (Vitest)                                        |
+| `npm run test:e2e`         | testes de ponta a ponta (Playwright, desktop e celular)           |
+| `npm run format`           | Prettier                                                          |
 
 Na primeira abertura, use **Carregar exemplos** para ver o sistema preenchido com dados genéricos (removíveis em Configurações).
 
@@ -56,7 +67,7 @@ e2e/           testes Playwright
 
 ## Publicação
 
-É um site estático (SPA). `vercel.json` já redireciona as rotas para `index.html`; em outros hosts configure o fallback de SPA para `index.html`.
+É um site estático: publique a pasta `dist/` em qualquer hospedagem (Vercel, Netlify, GitHub Pages, servidor próprio), inclusive em subpastas. As rotas usam `#` (ex.: `/#/tarefas/12`), então não é preciso configurar redirecionamentos no servidor.
 
 ## Pendências
 
