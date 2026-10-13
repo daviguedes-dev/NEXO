@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { CalendarClock, Menu as MenuIcon, Plus, Search, Settings, X } from 'lucide-react'
+import { Menu as MenuIcon, Plus, Search, Settings, X } from 'lucide-react'
 import { db } from '../../db/database'
 import { todayISO } from '../../lib/dates'
 import { isScheduled } from '../../lib/recurrence'
 import { Menu } from '../../components/Menu'
 import { NexoMark } from '../../components/icons'
 import { Kbd, cx } from '../../components/ui'
+import { AccountMenu } from './AccountMenu'
 import { CommandPalette } from './CommandPalette'
+import { LocalImportPrompt } from './LocalImportPrompt'
+import { ThemeSwitch } from './ThemeSwitch'
 import { CREATE, NAV } from './nav'
 
 function isTyping(e: KeyboardEvent) {
@@ -149,14 +152,14 @@ export function Shell() {
         </nav>
 
         <div className="sidebar__bottom">
-          <NavLink to="/configuracoes" className={({ isActive }) => cx('navlink', isActive && 'is-active')}>
-            <Settings size={17} strokeWidth={1.9} aria-hidden />
-            <span>Configurações</span>
-          </NavLink>
-          <p className="sidebar__note">
-            <CalendarClock size={13} aria-hidden />
-            <span>Dados salvos neste navegador</span>
-          </p>
+          <div className="sidebar__prefs">
+            <NavLink to="/configuracoes" className={({ isActive }) => cx('navlink', isActive && 'is-active')}>
+              <Settings size={17} strokeWidth={1.9} aria-hidden />
+              <span>Configurações</span>
+            </NavLink>
+            <ThemeSwitch />
+          </div>
+          <AccountMenu />
         </div>
       </aside>
       <div className="scrim" onClick={() => setNavOpen(false)} aria-hidden />
@@ -166,6 +169,7 @@ export function Shell() {
       </main>
 
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+      <LocalImportPrompt />
     </div>
   )
 }

@@ -11,11 +11,15 @@ import { SWATCHES } from '../../lib/meta'
 import { Menu } from '../../components/Menu'
 import { useConfirm, useToast } from '../../components/feedback'
 import { Button, Input, PageHeader, Panel } from '../../components/ui'
+import { useAuth } from '../auth/AuthProvider'
+import { AccountPanel, AppearancePanel } from './AccountPanels'
 
 export function SettingsPage() {
   const toast = useToast()
   const confirm = useConfirm()
   const fileRef = useRef<HTMLInputElement>(null)
+  const { state } = useAuth()
+  const cloud = state.status === 'ready' && state.mode === 'cloud'
   const labels = useLabels()
   const counts = useLiveQuery(async () => ({
     tasks: await db.tasks.count(),
@@ -76,10 +80,16 @@ export function SettingsPage() {
       <PageHeader
         section="configurações"
         title="Configurações"
-        description="Seus dados ficam no armazenamento local deste navegador. Faça backups regulares."
+        description={
+          cloud
+            ? 'Conta, aparência, backup e dados. Seus dados sincronizam com a nuvem e ficam disponíveis offline neste aparelho.'
+            : 'Seus dados ficam no armazenamento local deste navegador. Faça backups regulares.'
+        }
       />
 
       <div className="settings">
+        <AccountPanel />
+        <AppearancePanel />
         <Panel title="Backup e restauração">
           <p className="muted">Exporte tudo — tarefas, rotinas e execuções, métodos, publicações e o histórico completo — em um arquivo JSON.</p>
           <div className="settings__actions">
@@ -220,7 +230,11 @@ export function SettingsPage() {
           <div className="danger-row">
             <div>
               <p className="danger-row__title">Apagar todos os dados</p>
-              <p className="muted small">Remove definitivamente tudo o que está salvo neste navegador.</p>
+              <p className="muted small">
+                {cloud
+                  ? 'Remove definitivamente todos os dados da sua conta, em todos os aparelhos.'
+                  : 'Remove definitivamente tudo o que está salvo neste navegador.'}
+              </p>
             </div>
             <Button
               variant="danger"
@@ -229,7 +243,9 @@ export function SettingsPage() {
                 if (
                   !(await confirm({
                     title: 'Apagar tudo?',
-                    message: 'Esta ação não pode ser desfeita. Recomendamos exportar um backup antes.',
+                    message: cloud
+                      ? 'Os dados serão apagados da sua conta e de todos os aparelhos conectados. Esta ação não pode ser desfeita; exporte um backup antes.'
+                      : 'Esta ação não pode ser desfeita. Recomendamos exportar um backup antes.',
                     confirmLabel: 'Apagar todos os dados',
                     danger: true,
                   }))

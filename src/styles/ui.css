@@ -57,7 +57,7 @@
 }
 .btn--secondary:hover:not(:disabled) {
   border-color: var(--ink-4);
-  background: #fbfcfd;
+  background: var(--surface-sub);
 }
 .btn--ghost {
   background: transparent;
@@ -461,15 +461,15 @@ input[type='time'].input {
 }
 .pill--active,
 .pill--run-active {
-  background: #fff7e8;
-  color: #9a5b04;
-  border-color: #fde3b3;
+  background: var(--warn-soft);
+  color: var(--warn-ink);
+  border-color: var(--warn-line);
 }
 .pill--done,
 .pill--run-completed {
   background: var(--teal-soft);
   color: var(--teal-ink);
-  border-color: #bdeee6;
+  border-color: var(--teal-line);
 }
 .pill--paused,
 .pill--run-canceled {
@@ -488,8 +488,8 @@ input[type='time'].input {
   padding: 0 6px;
   border-radius: 5px;
   font-size: 11px;
-  background: var(--navy);
-  color: #d7fbf5;
+  background: var(--badge-bg);
+  color: var(--badge-ink);
   vertical-align: middle;
 }
 .version.is-old {
@@ -508,8 +508,8 @@ input[type='time'].input {
   font-size: 11.5px;
   font-weight: 550;
   color: var(--ink-2);
-  background: color-mix(in srgb, var(--c) 9%, white);
-  border: 1px solid color-mix(in srgb, var(--c) 28%, white);
+  background: color-mix(in srgb, var(--c) 9%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--c) 28%, var(--surface));
   white-space: nowrap;
 }
 .chip__dot {
@@ -529,8 +529,8 @@ input[type='time'].input {
   border-color: var(--c);
 }
 .chip--toggle.is-on {
-  background: color-mix(in srgb, var(--c) 12%, white);
-  border-color: color-mix(in srgb, var(--c) 45%, white);
+  background: color-mix(in srgb, var(--c) 12%, var(--surface));
+  border-color: color-mix(in srgb, var(--c) 45%, var(--surface));
   color: var(--ink);
 }
 .chip--add {
@@ -560,7 +560,7 @@ input[type='time'].input {
   height: 24px;
   padding: 0 4px 0 9px;
   border-radius: 6px;
-  background: var(--navy);
+  background: var(--badge-bg);
   color: #e2e8f0;
   font-size: 12px;
   font-weight: 500;
@@ -630,7 +630,7 @@ input[type='time'].input {
   transition: width 0.4s var(--ease);
 }
 .bar--navy .bar__fill {
-  background: var(--navy);
+  background: var(--ink);
 }
 .ring {
   position: relative;
@@ -669,7 +669,7 @@ input[type='time'].input {
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: var(--navy);
+  background: var(--badge-bg);
   color: var(--teal);
 }
 .empty--compact .empty__icon {
@@ -773,7 +773,7 @@ input[type='time'].input {
   outline: none;
 }
 .menu__item.is-danger {
-  color: var(--danger);
+  color: var(--danger-ink);
 }
 .menu__icon {
   display: grid;
@@ -801,7 +801,7 @@ input[type='time'].input {
   color: var(--ink);
 }
 .dialog::backdrop {
-  background: rgba(11, 18, 32, 0.42);
+  background: var(--scrim);
   backdrop-filter: blur(2px);
 }
 .dialog[open] {
@@ -876,7 +876,7 @@ input[type='time'].input {
   gap: 8px;
   padding: 12px 18px;
   border-top: 1px solid var(--line);
-  background: #fafbfc;
+  background: var(--surface-sub);
 }
 .dialog__foot .inline-check,
 .dialog__foot-note {
@@ -932,8 +932,8 @@ input[type='time'].input {
   gap: 10px;
   padding: 10px 14px;
   border-radius: 10px;
-  background: var(--navy);
-  color: #e2e8f0;
+  background: var(--inverse);
+  color: var(--inverse-ink);
   font-size: 13.5px;
   box-shadow: var(--shadow-lg);
   pointer-events: auto;
@@ -944,7 +944,7 @@ input[type='time'].input {
   flex: none;
 }
 .toast--error svg {
-  color: #fb7185;
+  color: var(--danger-ink);
 }
 .toast__action {
   border: 0;

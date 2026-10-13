@@ -10,6 +10,14 @@
     />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <title>Nexo — Organização pessoal e operacional</title>
+    <script>
+      // aplica o tema antes da primeira pintura (evita piscar claro no tema escuro)
+      try {
+        var p = localStorage.getItem('nexo:theme') || 'system'
+        var dark = p === 'dark' || (p === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+      } catch (e) {}
+    </script>
     <style>
       /* Exibido só enquanto o app carrega; some quando o React assume o #root. */
       .boot {
@@ -43,6 +51,20 @@
         background: #f1f5f9;
         padding: 1px 6px;
         border-radius: 4px;
+      }
+      [data-theme='dark'] .boot {
+        background: #0b1220;
+        color: #c3cfdd;
+      }
+      [data-theme='dark'] .boot__help {
+        background: #101a2c;
+        border-color: #1f2c42;
+      }
+      [data-theme='dark'] .boot__help h1 {
+        color: #e6edf6;
+      }
+      [data-theme='dark'] .boot__help code {
+        background: #1a2639;
       }
       @keyframes boot-show {
         to {

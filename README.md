@@ -49,6 +49,20 @@ npm run dev        # http://localhost:5173
 
 Na primeira abertura, use **Carregar exemplos** para ver o sistema preenchido com dados genéricos (removíveis em Configurações).
 
+## Conta, sincronização e tema
+
+- **Login na nuvem (Supabase):** criar conta, entrar, recuperar senha e confirmar e-mail. Cada conta tem seu próprio banco local (IndexedDB) e sincroniza com a tabela `public.nexo_records`, protegida por RLS: cada usuário só lê e grava os próprios registros.
+- **Funciona offline:** as alterações entram numa fila (`outbox`) gravada na mesma transação e são enviadas quando houver conexão. Em conflito vale a última gravação; alterações locais pendentes nunca são sobrescritas.
+- **Modo sem conta:** “Continuar sem conta” mantém tudo só no navegador. Ao entrar depois, o Nexo oferece importar esses dados para a conta.
+- **Tema escuro:** claro, escuro ou “sistema”, na barra lateral, na tela de login e em Configurações › Aparência.
+
+### Configuração do Supabase
+
+- Migração: `supabase/migrations/20261013213900_nexo_records_sync.sql` (já aplicada no projeto `harpmzexpfpqfppzcstw`).
+- Variáveis opcionais: `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` (o padrão aponta para o projeto acima; a chave publicável é pública por design).
+- No painel do Supabase › Authentication › URL Configuration, cadastre o endereço onde o app será publicado em **Site URL** e **Redirect URLs**; os links de confirmação e de nova senha voltam para ele. Ao abrir o arquivo `Nexo.html` direto do computador, os links voltam para o Site URL.
+- O envio de e-mails padrão do Supabase tem limite baixo por hora; para uso real, configure um SMTP próprio (Authentication › SMTP Settings).
+
 ## Arquitetura
 
 - **Vite + React 19 + TypeScript** (estrito), React Router, ícones Lucide, fontes Geist/Geist Mono auto-hospedadas.

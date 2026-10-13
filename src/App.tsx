@@ -1,6 +1,9 @@
 import { lazy, Suspense, type ComponentType, type LazyExoticComponent } from 'react'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
 import { FeedbackProvider } from './components/feedback'
+import { AuthProvider, useAuth } from './features/auth/AuthProvider'
+import { AuthScreen, NewPasswordScreen } from './features/auth/AuthScreen'
+import { NexoMark } from './components/icons'
 import { Shell } from './features/shell/Shell'
 import { OverviewPage } from './features/overview/OverviewPage'
 import { NotFound } from './features/shell/NotFound'
@@ -52,7 +55,23 @@ const router = createHashRouter([
 export function App() {
   return (
     <FeedbackProvider>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <Gate />
+      </AuthProvider>
     </FeedbackProvider>
   )
+}
+
+/** Decide entre carregamento, login, nova senha ou o sistema (remontado a cada troca de conta). */
+function Gate() {
+  const { state, dbName } = useAuth()
+  if (state.status === 'loading')
+    return (
+      <div className="splash" aria-busy="true" aria-label="Carregando o Nexo">
+        <NexoMark size={40} />
+      </div>
+    )
+  if (state.status === 'signedOut') return <AuthScreen />
+  if (state.status === 'recovery') return <NewPasswordScreen />
+  return <RouterProvider key={dbName ?? 'local'} router={router} />
 }

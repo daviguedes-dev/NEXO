@@ -9,6 +9,7 @@ test.describe('Nexo — fluxos principais', () => {
 
   test('tarefa: criar pelo atalho, concluir subtarefa, mudar status e ver o histórico', async ({ page, consoleErrors: _ }) => {
     await page.goto('/#/tarefas')
+    await expect(page.getByRole('heading', { level: 1, name: 'Tarefas' })).toBeVisible()
     await page.keyboard.press('c')
     const dialog = page.getByRole('dialog', { name: 'Nova tarefa' })
     await dialog.getByLabel('Título').fill('Preparar relatório semanal')

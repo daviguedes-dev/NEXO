@@ -7,7 +7,11 @@ import './styles/base.css'
 import './styles/ui.css'
 import './styles/shell.css'
 import './styles/modules.css'
+import './styles/auth.css'
+import { applyTheme } from './lib/theme'
 import { App } from './App'
+
+applyTheme()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
