@@ -1,0 +1,66 @@
+:root {
+  /* marca */
+  --navy: #0b1220;
+  --navy-2: #121b2e;
+  --navy-3: #1b263d;
+  --navy-line: rgba(148, 163, 184, 0.14);
+  --teal: #14b8a6;
+  --teal-hover: #0fa392;
+  --teal-ink: #0f766e; /* turquesa para texto sobre branco (contraste AA) */
+  --teal-soft: #e6f8f5;
+  --teal-ring: rgba(20, 184, 166, 0.28);
+
+  /* superfícies */
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --surface-3: #e8eef4;
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
+
+  /* texto */
+  --ink: #0b1220;
+  --ink-2: #334155;
+  --ink-3: #64748b;
+  --ink-4: #94a3b8;
+
+  /* apoio semântico */
+  --danger: #e11d48;
+  --danger-soft: #fff1f3;
+  --warn: #d97706;
+  --warn-soft: #fff7e8;
+  --info: #4f46e5;
+
+  /* status de tarefa */
+  --st-backlog: #94a3b8;
+  --st-todo: #64748b;
+  --st-doing: #d97706;
+  --st-review: #6366f1;
+  --st-done: #14b8a6;
+
+  /* prioridade */
+  --pr-urgent: #e11d48;
+  --pr-high: #f97316;
+  --pr-medium: #0b1220;
+  --pr-low: #94a3b8;
+
+  /* consistência (mapa de contribuições) */
+  --heat-0: #eef2f6;
+  --heat-1: #c7efe9;
+  --heat-2: #7dd8cb;
+  --heat-3: #26b5a2;
+  --heat-4: #0b7f72;
+
+  /* tipografia */
+  --font-sans: 'Geist Variable', 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* escala */
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(11, 18, 32, 0.05);
+  --shadow: 0 1px 2px rgba(11, 18, 32, 0.04), 0 4px 16px -6px rgba(11, 18, 32, 0.1);
+  --shadow-lg: 0 24px 64px -16px rgba(11, 18, 32, 0.32), 0 2px 6px rgba(11, 18, 32, 0.08);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --sidebar-w: 248px;
+}
